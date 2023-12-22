@@ -6,34 +6,34 @@
 
   <ItemGroup>
     <Reference Include="Mono.Data">
-      <HintPath>..\..\dll3.5\Mono.Data.dll</HintPath>
+      <HintPath>..\DLL\Mono.Data.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Data.Sqlite">
-      <HintPath>..\..\dll3.5\Mono.Data.Sqlite.dll</HintPath>
+      <HintPath>..\DLL\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
-      <HintPath>..\..\dll3.5\MySql.Data.dll</HintPath>
+      <HintPath>..\DLL\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="NGEnum">
-      <HintPath>..\..\dll3.5\NGEnum.dll</HintPath>
+      <HintPath>..\DLL\NGEnum.dll</HintPath>
     </Reference>
     <Reference Include="NGNotification">
-      <HintPath>..\..\dll3.5\NGNotification.dll</HintPath>
+      <HintPath>..\DLL\NGNotification.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>..\..\dllUnity\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>..\DLL\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>..\..\dllUnity\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>..\DLL\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\dllUnity\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>..\DLL\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>..\..\dllUnity\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>..\DLL\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>..\..\dllUnity\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>..\DLL\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -35,7 +35,8 @@ namespace NGConnection
 			if (connectionProperties.ContainsKey("Connection Timeout"))
 				TimeOut = Convert.ToInt32(connectionProperties["Connection Timeout"]);
 		}
-		public override string GetConnectionString() { return $@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};"; }
+		protected override string GetConnectionString() => $@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};";
+
 		public override bool OpenConnection(bool openTansaction = false)
 		{
 			connection = new MySqlConnection(GetConnectionString());

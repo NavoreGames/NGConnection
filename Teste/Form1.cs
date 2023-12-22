@@ -25,12 +25,15 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             sqlite = new Sqlite("", "u758086818_NGTroia.db", "u758086818_NGTroia", "#Navore2019");
-            mysql = new Mysql("sql802.main-hosting.eu", "u758086818_NGTroia", "u758086818_NGTroia", "@NGTroia1385@", 500);
-            //mysql = new Mysql("45.152.46.52", "u758086818_NGTroia", "u758086818_NGTroia", "@NGTroia1385@");
-            http = new Http("http://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
-            ftp = new Ftp("ftp://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
+            sqlite.TestConnection();
+
+            //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            //sqlite = new Sqlite("", "u758086818_NGTroia.db", "u758086818_NGTroia", "#Navore2019");
+            //mysql = new Mysql("sql802.main-hosting.eu", "u758086818_NGTroia", "u758086818_NGTroia", "@NGTroia1385@", 500);
+            ////mysql = new Mysql("45.152.46.52", "u758086818_NGTroia", "u758086818_NGTroia", "@NGTroia1385@");
+            //http = new Http("http://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
+            //ftp = new Ftp("ftp://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
 
             try
             {
@@ -38,7 +41,7 @@ namespace Teste
 
                 //bool ret = mysql.TestConnection();
 
-                byte[] bytes = ftp.Select(sqlite.DataBaseName);
+               // byte[] bytes = ftp.Select(sqlite.DataBaseName);
             }
             catch (Exception ex)
             {

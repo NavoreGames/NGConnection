@@ -18,7 +18,8 @@ namespace NGConnection
 		{
 
 		}
-		public override string GetConnectionString() { return Path.Combine(IpAddress, DataBaseName); }
+		protected override string GetConnectionString() => Path.Combine(IpAddress, DataBaseName);
+
 		public override bool OpenConnection(bool openTansaction = false)
 		{
 			connection = new SqliteConnection(GetConnectionString());
