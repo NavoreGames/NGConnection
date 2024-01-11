@@ -88,8 +88,6 @@ namespace NGConnection
             else
                 return NGNotifier.AddWarning(-1, "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
 
-            Dispose();
-
             return retorno;
         }
         public virtual int ExecuteNonQuery(bool openConnection, params string[] commands) => ExecuteNonQuery(openConnection, false, commands);
@@ -121,8 +119,6 @@ namespace NGConnection
             else
                 return NGNotifier.AddWarning<object>("Connection is not open", "try open connection with method OpenConnection(), or use other overload");
 
-            Dispose();
-
             return retorno;
         }
         public virtual object ExecuteScalar(bool openConnection, params string[] commands) => ExecuteScalar(openConnection, false, commands);
@@ -148,6 +144,8 @@ namespace NGConnection
                     //{
                     //
                     //}
+
+                    dataTable.Dispose();
                 }
                 ////// FECHA A CONEXÃO  ///////
                 if (openConnection == true)
@@ -155,9 +153,6 @@ namespace NGConnection
             }
             else
                 return NGNotifier.AddWarning(Enumerable.Empty<object>(), "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
-
-            dataTable.Dispose();
-            Dispose();
 
             return retorno;
         }
