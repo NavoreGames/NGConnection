@@ -3,7 +3,7 @@ using Mono.Data.Sqlite;
 
 namespace NGConnection
 {
-	public sealed class Sqlite : DataBase
+	public sealed class Sqlite : ConnectionDataBases
 	{
 		public Sqlite(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
 			: base(ipAddress, dataBaseName, userName, password, port, timeOut) { }

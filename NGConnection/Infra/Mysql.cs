@@ -9,7 +9,7 @@ using NGNotification.Enum;
 
 namespace NGConnection
 {
-	public sealed class Mysql : DataBase
+	public sealed class Mysql : ConnectionDataBases
 	{
 		public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
 			: base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
