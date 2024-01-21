@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
-using NGConnection.Enum;
-using NGNotification;
-using NGNotification.Enum;
 
 namespace NGConnection
 {

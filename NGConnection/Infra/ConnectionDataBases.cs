@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using NGConnection.Enum;
 using NGConnection.Interface;
 using NGNotification;
-using NGNotification.Enum;
 
 namespace NGConnection
 {

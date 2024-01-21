@@ -1,7 +1,4 @@
 ﻿using NGConnection.Interface;
-using NGNotification;
-using NGNotification.Enum;
-using System.Collections.Generic;
 
 namespace NGConnection
 {

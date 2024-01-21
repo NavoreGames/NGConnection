@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using NGConnection.Enum;
-using NGConnection.Interface;
+﻿using NGConnection.Interface;
 using NGNotification;
-using NGNotification.Enum;
 
 namespace NGConnection
 {

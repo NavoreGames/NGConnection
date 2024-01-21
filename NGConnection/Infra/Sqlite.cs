@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Mono.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
+using System.IO;
 
 namespace NGConnection
 {
