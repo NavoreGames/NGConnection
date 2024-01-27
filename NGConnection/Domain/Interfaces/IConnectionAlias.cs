@@ -1,4 +1,4 @@
-﻿namespace NGConnection.Interface
+﻿namespace NGConnection.Interfaces
 {
 	public interface IConnectionAlias
 	{

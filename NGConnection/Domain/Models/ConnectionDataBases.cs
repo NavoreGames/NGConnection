@@ -1,62 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using NGConnection.Interface;
-using NGNotification;
+using NGConnection.Interfaces;
+using NGNotification.Models;
 
-namespace NGConnection
+namespace NGConnection.Models
 {
-	public abstract class ConnectionDataBases : Connection, IConnectionDataBases
-	{
-		protected IDbConnection connection;
-		protected IDbCommand command;
-		protected IDbTransaction transaction;
-		protected IDataReader dataReader;
+    public abstract class ConnectionDataBases : Connection, IConnectionDataBases
+    {
+        protected IDbConnection connection;
+        protected IDbCommand command;
+        protected IDbTransaction transaction;
+        protected IDataReader dataReader;
 
-		public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
-			: base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
-		public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int timeOut)
-			: base(ipAddress, dataBaseName, userName, password, timeOut) { }
-		public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password)
-			: base(ipAddress, dataBaseName, userName, password) { }
-		public ConnectionDataBases(string connectionString)
-			: base(connectionString) { }
+        public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
+            : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
+        public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int timeOut)
+            : base(ipAddress, dataBaseName, userName, password, timeOut) { }
+        public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password)
+            : base(ipAddress, dataBaseName, userName, password) { }
+        public ConnectionDataBases(string connectionString)
+            : base(connectionString) { }
 
-		public void Dispose()
-		{
-			connection.Dispose();
-			command.Dispose();
-			transaction.Dispose();
-			dataReader.Dispose();
-		}
-		public bool TestConnection() => OpenConnection() | CloseConnection();
-		public virtual bool OpenConnection(bool openTansaction = false)
-		{
-			connection.Open();
-			if (connection.State != ConnectionState.Open)
-				throw new NGException("", $"Unable to open connection, connection is {connection.State}", this.GetType().FullName + "/OpenConnection");
+        public void Dispose()
+        {
+            connection.Dispose();
+            command.Dispose();
+            transaction.Dispose();
+            dataReader.Dispose();
+        }
+        public bool TestConnection() => OpenConnection() | CloseConnection();
+        public virtual bool OpenConnection(bool openTansaction = false)
+        {
+            connection.Open();
+            if (connection.State != ConnectionState.Open)
+                throw new NGException("", $"Unable to open connection, connection is {connection.State}", GetType().FullName + "/OpenConnection");
 
             transaction = null;
-			if (openTansaction == true)
-			{
-				transaction = connection.BeginTransaction();
-				if (transaction == null)
-				{
-					CloseConnection();
-					throw new NGException("", $"Unable to open transaction", this.GetType().FullName + "/OpenConnection");
-				}
-			}
+            if (openTansaction == true)
+            {
+                transaction = connection.BeginTransaction();
+                if (transaction == null)
+                {
+                    CloseConnection();
+                    throw new NGException("", $"Unable to open transaction", GetType().FullName + "/OpenConnection");
+                }
+            }
 
             return true;
-		}
+        }
         public virtual bool CloseConnection()
-		{
+        {
             connection.Close();
             Dispose();
 
             return true;
-		}
+        }
 
         public virtual int ExecuteNonQuery(bool openConnection, bool tansaction, params string[] commands)
         {

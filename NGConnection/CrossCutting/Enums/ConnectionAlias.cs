@@ -1,7 +1,7 @@
 ﻿using NGEnum;
-using NGConnection.Interface;
+using NGConnection.Interfaces;
 
-namespace NGConnection.Enum
+namespace NGConnection.Enums
 {
 	public sealed class ConnectionSqlite : IConnectionAlias{}
 	public sealed class ConnectionMysql : IConnectionAlias{}
