@@ -1,7 +1,8 @@
 ﻿using Microsoft.Data.Sqlite;
+using NGConnection.Models;
 using System.IO;
 
-namespace NGConnection.Models
+namespace NGConnection
 {
     public sealed class Sqlite : ConnectionDataBases
     {

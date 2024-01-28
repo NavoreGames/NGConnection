@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using NGConnection.Interfaces;
+using System.Collections.Generic;
+using NGNotification;
 using NGNotification.Models;
+using NGConnection.Interfaces;
+
 
 namespace NGConnection.Models
 {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using NGConnection.Models;
 
-namespace NGConnection.Models
+namespace NGConnection
 {
     public sealed class Mysql : ConnectionDataBases
     {

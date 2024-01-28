@@ -4,8 +4,9 @@ using System.Net;
 using System.Text;
 using NGNotification.Models;
 using NGNotification.Enums;
+using NGConnection.Models;
 
-namespace NGConnection.Models
+namespace NGConnection
 {
     public sealed class Ftp : Connection
     {
