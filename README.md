@@ -1,7 +1,7 @@
 # NGConnection
 
 ### Definição: 
-- O pacote NGNotification contém estruturas para retorno de mensagens, notificações e exceções.
+- O pacote NGConnection contém estruturas para auxiliar a manipulação de conexões com banco de dados.
 
 ### Vantagens: 
 - Ter estruturas prontas para notificações e retornos.
