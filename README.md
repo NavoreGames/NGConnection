@@ -18,9 +18,7 @@ using NGConnection.Enums;
 
 ### Implementação NGConnection:
 
-NGNotifier é a principal classe para controlar notificações, é uma classe estática que contém a lista de notificações e métodos para manipular essa lista.
-
-Se precisar verificar se existe alguma notificação, usar HasNotifications:
+Para criar uma conexão basta criar um objeto co banco correspondente passando os parâmetros da string de conexão.
 ```ruby
 NGNotifier.HasNotifications
 ```
