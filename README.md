@@ -20,9 +20,13 @@ using NGConnection.Enums;
 
 Para criar uma conexão basta criar um objeto co banco correspondente passando os parâmetros da string de conexão.
 ```ruby
-NGNotifier.HasNotifications
+MySql mysql = new MySql("IpAddress", "DataBaseName", "UserName", "Password");
+MySql mysql = new MySql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
 ```
+> [!NOTE]
+> Note que pode-se iniciar o objeto passando a string inteira ou os parametros separadamente.
 
+Existe também métodos que auxiliares que gategorizam a mensagem automatico:
 Há vários métodos para adicionar mensagens.
 
 Para adicionar uma mensagem simples, usar o método add.
