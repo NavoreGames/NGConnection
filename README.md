@@ -18,7 +18,7 @@ using NGConnection.Enums;
 
 ### Implementação NGConnection:
 
-Para criar uma conexão basta criar um objeto co banco correspondente passando os parâmetros da string de conexão.
+Para criar uma conexão basta criar um objeto do banco correspondente passando os parâmetros da string de conexão.
 ```ruby
 MySql mysql = new MySql("IpAddress", "DataBaseName", "UserName", "Password");
 MySql mysql = new MySql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
