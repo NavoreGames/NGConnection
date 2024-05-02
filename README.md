@@ -4,20 +4,19 @@
 - O pacote NGConnection contém estruturas para auxiliar a manipulação de conexões com banco de dados.
 
 ### Vantagens: 
-- Ter estruturas prontas para notificações e retornos.
-- Simplificar a adição de mensagens e saidas de métodos após adição.
+- Ter estruturas prontas para facilitar a manipulação de conexões.
+- Padronizar a manipulação de conexões.
 
 # Documentação
 
 ### Usings:
 
 ```ruby
-using NGNotification;
-using NGNotification.Enums;
-using NGNotification.Models;
+using NGConnection;
+using NGConnection.Enums;
 ```
 
-### Implementação NGNotifier:
+### Implementação NGConnection:
 
 NGNotifier é a principal classe para controlar notificações, é uma classe estática que contém a lista de notificações e métodos para manipular essa lista.
 
