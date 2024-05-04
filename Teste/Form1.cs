@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using MySqlX.XDevAPI;
 using NGConnection;
+using NGConnection.Enums;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Teste
 {
     public partial class Form1 : Form
     {
         private Sqlite sqlite;
-        private Mysql mysql;
+        private NGConnection.MySql mysql;
         private Http http;
         private Ftp ftp;
 
@@ -25,6 +22,9 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
+            NGConnection.MySql mysql = new NGConnection.MySql("IpAddress", "DataBaseName", "UserName", "Password");
+            NGConnection.MySql mysql = new NGConnection.MySql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
+
             sqlite = new Sqlite("", "u758086818_NGTroia.db", "u758086818_NGTroia", "#Navore2019");
             sqlite.TestConnection();
 
