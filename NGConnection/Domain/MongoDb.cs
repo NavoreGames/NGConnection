@@ -6,17 +6,17 @@ using NGNotification.Models;
 
 namespace NGConnection;
 
-public sealed class MongoDb : ConnectionDataBases
+public sealed class Mongodb : ConnectionDataBases
 {
-    public MongoDb(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
+    public Mongodb(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
-    public MongoDb(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
+    public Mongodb(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
-    public MongoDb(string ipAddress, string dataBaseName, string userName, string password, int port)
+    public Mongodb(string ipAddress, string dataBaseName, string userName, string password, int port)
         : base(ipAddress, dataBaseName, userName, password, port) { }
-    public MongoDb(string ipAddress, string dataBaseName, string userName, string password)
+    public Mongodb(string ipAddress, string dataBaseName, string userName, string password)
         : base(ipAddress, dataBaseName, userName, password) { }
-    public MongoDb(string connectionString)
+    public Mongodb(string connectionString)
         : base(connectionString) { }
 
     protected override void SetConnectionString(string ConnectionString) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetConnectionString");

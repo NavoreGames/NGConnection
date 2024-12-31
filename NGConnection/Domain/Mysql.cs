@@ -6,17 +6,17 @@ using NGConnection.Models;
 
 namespace NGConnection;
 
-public sealed class MySql : ConnectionDataBases
+public sealed class Mysql : ConnectionDataBases
 {
-    public MySql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
+    public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
-    public MySql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
+    public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
-    public MySql(string ipAddress, string dataBaseName, string userName, string password, int port)
+    public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port)
         : base(ipAddress, dataBaseName, userName, password, port) { }
-    public MySql(string ipAddress, string dataBaseName, string userName, string password)
+    public Mysql(string ipAddress, string dataBaseName, string userName, string password)
         : base(ipAddress, dataBaseName, userName, password) { }
-    public MySql(string connectionString)
+    public Mysql(string connectionString)
         : base(connectionString) { }
 
     protected override void SetConnectionString(string ConnectionString)

@@ -6,17 +6,17 @@ using NGNotification.Models;
 
 namespace NGConnection
 {
-    public sealed class NoSql : ConnectionDataBases
+    public sealed class Nosql : ConnectionDataBases
     {
-        public NoSql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
+        public Nosql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
             : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
-        public NoSql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
+        public Nosql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
             : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
-        public NoSql(string ipAddress, string dataBaseName, string userName, string password, int port)
+        public Nosql(string ipAddress, string dataBaseName, string userName, string password, int port)
             : base(ipAddress, dataBaseName, userName, password, port) { }
-        public NoSql(string ipAddress, string dataBaseName, string userName, string password)
+        public Nosql(string ipAddress, string dataBaseName, string userName, string password)
             : base(ipAddress, dataBaseName, userName, password) { }
-        public NoSql(string connectionString)
+        public Nosql(string connectionString)
             : base(connectionString) { }
 
         protected override void SetConnectionString(string ConnectionString) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetConnectionString");
