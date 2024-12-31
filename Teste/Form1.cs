@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using MySqlX.XDevAPI;
 using NGConnection;
 using NGConnection.Enums;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using NGConnection.Models;
 
 namespace Teste
 {
@@ -15,6 +14,12 @@ namespace Teste
         private Http http;
         private Ftp ftp;
 
+        private string IpAddress = "0.0.0.0";
+        private string DataBaseName = "YourDataBase";
+        private string UserName = "UserName";
+        private string Password = "********";
+        private string TimeOut = "30";
+
         public Form1()
         {
             InitializeComponent();
@@ -22,8 +27,8 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            Mysql mysql = new Mysql("IpAddress", "DataBaseName", "UserName", "Password");
-            Mysql mysql = new Mysql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
+            Mysql mysql1 = new Mysql("IpAddress", "DataBaseName", "UserName", "Password");
+            Mysql mysql2 = new Mysql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
 
             sqlite = new Sqlite("", "u758086818_NGTroia.db", "u758086818_NGTroia", "#Navore2019");
             sqlite.TestConnection();
@@ -50,6 +55,34 @@ namespace Teste
             {
 
             }
+        }
+
+        public void CreateDataBaseFromCode()
+        {
+            DataBase dataBase =
+                new DataBase
+                (
+                    "Teste",
+                    new List<Table>()
+                    {
+                        new Table
+                        (
+                            "User", /// Alias, é o nome que ficará a propriedade na classe
+                            "Usr001", /// Name, é o nome da tabela no banco
+                            DdlCommandType.Create, /// DdlCommandType, é a ação que será feita na tabela
+                            new List<Column>
+                            (
+
+
+                            )
+                        ),
+
+                    }
+                );
+
+            //DataBase dataBase = DataBase.Create("Teste", )
+
+
         }
     }
 }

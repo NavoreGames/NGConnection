@@ -158,4 +158,8 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
         return retorno;
     }
     public virtual IEnumerable<object> ExecuteReader(string commands) => ExecuteReader(false, commands);
+
+    public virtual bool ExecuteDdl(DataBase dataBase) { throw new NGException("", $"Method not implemented in child class", GetType().FullName + "/ExecuteDdl"); }
+
+
 }
