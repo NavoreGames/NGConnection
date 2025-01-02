@@ -1,5 +1,4 @@
-﻿using System;
-using NGConnection.Enums;
+﻿using NGConnection.Enums;
 
 namespace NGConnection.Attributes;
 
@@ -9,8 +8,8 @@ namespace NGConnection.Attributes;
 //////// PARA GUARDAR INFORMAÇÕES DAS TABELAS     ////////////////////////////
 //////// COMO CHAVES, TIPO DO CAMPO, NOT NULL.    ////////////////////////////
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-	public sealed class ColumnPropertiesAttribute(string name, int length, bool notNull, Key key, bool autoIncrement) : Attribute
-	{
+public sealed class ColumnPropertiesAttribute(string name, int length, bool notNull, Key key, bool autoIncrement) : Attribute
+{
     public string Name { get; set; } = name;
     public int Length { get; set; } = length;
     public bool NotNull { get; set; } = notNull;

@@ -1,10 +1,4 @@
-﻿using System;
-using NGNotification.Models;
-using NGNotification.Enums;
-using System.Diagnostics;
-using NGConnection.Models;
-
-namespace NGConnection;
+﻿namespace NGConnection;
 
 public sealed class Http : ConnectionTransferProtocol
 {

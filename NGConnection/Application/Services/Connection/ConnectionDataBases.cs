@@ -1,12 +1,7 @@
-﻿using System.Data;
-using System.Linq;
-using System.Collections.Generic;
-using NGNotification;
-using NGNotification.Models;
-using NGConnection.Interfaces;
+﻿using NGConnection.Interfaces;
+using NGConnection.Models;
 
-
-namespace NGConnection.Models;
+namespace NGConnection;
 
 public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 {

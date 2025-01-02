@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using NGConnection.Interfaces;
+﻿using NGConnection.Interfaces;
 
-namespace NGConnection.Models;
+namespace NGConnection;
 
 public abstract class Connection : IConnection
 {

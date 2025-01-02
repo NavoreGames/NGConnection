@@ -1,10 +1,4 @@
-﻿using System.IO;
-using System.Collections.Generic;
-using Microsoft.Data.Sqlite;
-using NGConnection.Models;
-using NGNotification.Models;
-
-namespace NGConnection;
+﻿namespace NGConnection;
 
 public sealed class Mongodb : ConnectionDataBases
 {

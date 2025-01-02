@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using NGNotification.Models;
-using NGNotification.Enums;
-using NGConnection.Models;
+﻿using System.Net;
 
 namespace NGConnection;
 

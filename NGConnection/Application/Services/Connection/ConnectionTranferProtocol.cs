@@ -1,8 +1,6 @@
 ﻿using NGConnection.Interfaces;
-using NGNotification.Models;
-using System.Collections.Generic;
 
-namespace NGConnection.Models;
+namespace NGConnection;
 
 public abstract class ConnectionTransferProtocol : Connection, IConnectionTransferProtocol
 {
