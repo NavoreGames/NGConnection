@@ -5,6 +5,7 @@ namespace NGConnection;
 
 public class CommandDdl : Command, ICommandDdl
 {
-    public DataBase dataBase { get; set; }
-    public CommandDdl() { }
+    internal CommandDdl() { }
+    public CommandDdl(string dataBaseName) { DataBaseName = dataBaseName; }
+    public CommandDdl(string dataBaseName, string tableName) { DataBaseName = dataBaseName; TableName = tableName; }
 }
