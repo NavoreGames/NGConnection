@@ -156,5 +156,10 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 
     public virtual bool ExecuteDdl(DataBase dataBase) { throw new NGException("", $"Method not implemented in child class", GetType().FullName + "/ExecuteDdl"); }
 
+    public virtual bool SetCommand()
+    {
+        return default;
+    }
+
 
 }
