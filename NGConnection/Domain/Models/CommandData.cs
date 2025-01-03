@@ -17,8 +17,8 @@ namespace NGConnection.Models
             Command = command;
         }
 
-        public CommandData SetCommand(Type connectionType) 
-        { 
+        public CommandData SetCommand(Type connectionType)
+        {
             return new()
             {
                 Identifier = this.Identifier,
