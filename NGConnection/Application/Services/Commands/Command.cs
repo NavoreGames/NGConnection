@@ -7,6 +7,7 @@ namespace NGConnection;
 public abstract class Command : ICommand
 {
     protected string Query { get; set; }
+    protected string DataBase { get; set; }
     protected string Table { get; set; }
 
     public override string ToString() => Query;

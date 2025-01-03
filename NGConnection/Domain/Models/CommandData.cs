@@ -10,7 +10,7 @@ namespace NGConnection.Models
         internal ICommand Command { get; set; }
 
         internal CommandData() { }
-        internal CommandData(Enums.CommandType commandType, ICommand command) 
+        public CommandData(Enums.CommandType commandType, ICommand command) 
         { 
             Identifier = Guid.NewGuid();
             CommandType = commandType;
