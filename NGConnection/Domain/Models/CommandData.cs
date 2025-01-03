@@ -4,10 +4,10 @@ namespace NGConnection.Models
 {
 	public class CommandData
 	{
-		internal Guid Identifier { get; set; }
-        internal Enums.CommandType CommandType { get; set; }
-        internal Type ConnectionType { get; set; }
-        internal ICommand Command { get; set; }
+		public Guid Identifier { get; protected set; }
+        public Enums.CommandType CommandType { get; protected set; }
+        public Type ConnectionType { get; protected set; }
+        public ICommand Command { get; set; }
 
         internal CommandData() { }
         public CommandData(Enums.CommandType commandType, ICommand command) 

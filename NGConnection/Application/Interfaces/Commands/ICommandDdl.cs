@@ -1,6 +1,6 @@
 ﻿namespace NGConnection.Interfaces;
 
-public interface ICommandDdl
+public interface ICommandDdl : ICommand
 {
 
 }

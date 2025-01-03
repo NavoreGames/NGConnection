@@ -4,7 +4,7 @@ using NGConnection.Interfaces;
 
 namespace NGConnection;
 
-public abstract class Command : ICommand
+public abstract class Command
 {
     protected string Query { get; set; }
     protected string DataBaseName { get; set; }
