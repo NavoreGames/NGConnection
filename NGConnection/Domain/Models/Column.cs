@@ -13,10 +13,9 @@ public class Column
 	public int Length { get; private set; }
 	public bool NotNull { get; private set; }
 	public bool Autoincrement { get; private set; }
-	public string AlterColumnalias { get; private set; }
     #endregion
 
-    public Column(string tableName, string name, string alias, Key key, VariableType type, int length, bool notNull, bool autoincrement, string alterColumnalias)
+    public Column(string tableName, string name, string alias, Key key, VariableType type, int length, bool notNull, bool autoincrement)
 	{
         TableName = tableName;
         Name = name;
@@ -26,7 +25,6 @@ public class Column
 		NotNull = notNull;
 		Autoincrement = autoincrement;
 		Key = key;
-		AlterColumnalias = alterColumnalias;
 	}
 
     public Column(string tableName, string name, string alias, Key key, VariableType type, bool autoincrement) :
