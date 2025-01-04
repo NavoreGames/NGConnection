@@ -1,15 +1,9 @@
 ﻿using NGEnum;
 
 namespace NGConnection.Enums;
-public sealed class DdlActionType : NGEnums<DdlActionType>
+public sealed class DdlActionType : CommandType
 {
-    public static new readonly DdlActionType Add = new("Add");
-    public static readonly DdlActionType Remove = new ("Remove");
-    public static readonly DdlActionType Modify = new ("Modify");
-		
-
-	public DdlActionType() : base(None) { }
-	public DdlActionType(object pObject) : base(pObject) { }
-	public DdlActionType(int pId, object pObject) : base(pId, pObject) { }
-
+    public static new readonly CommandType Add = new("Add");
+    public static readonly CommandType Remove = new ("Remove");
+    public static readonly CommandType Modify = new ("Modify");
 }
