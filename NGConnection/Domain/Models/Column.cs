@@ -28,38 +28,38 @@ public class Column
 	}
 
     public Column(string tableName, string name, string alias, Key key, VariableType type, bool autoincrement) :
-        this(tableName, name, alias, key, type, 0, true, autoincrement, "") { }
+        this(tableName, name, alias, key, type, 0, true, autoincrement) { }
     public Column(string tableName, string name, string alias, Key key, VariableType type, int length, bool notNul) :
-        this(tableName, name, alias, key, type, length, notNul, false, "") { }
+        this(tableName, name, alias, key, type, length, notNul, false) { }
     public Column(string tableName, string name, string alias, Key key, VariableType type, int length) :
-        this(tableName, name, alias, key, type, length, true, false, "") { }
+        this(tableName, name, alias, key, type, length, true, false) { }
     public Column(string tableName, string name, string alias, Key key, VariableType type) :
-        this(tableName, name, alias, key, type, 0, true, false, "") { }
+        this(tableName, name, alias, key, type, 0, true, false) { }
 
     public Column(string tableName, string name, string alias, VariableType type, bool autoincrement) :
-        this(tableName, name, alias, Key.None, type, 0, true, autoincrement, "") { }
+        this(tableName, name, alias, Key.None, type, 0, true, autoincrement) { }
     public Column(string tableName, string name, string alias, VariableType type, int length, bool notNul) :
-        this(tableName, name, alias, Key.None, type, length, notNul, false, "") { }
+        this(tableName, name, alias, Key.None, type, length, notNul, false) { }
     public Column(string tableName, string name, string alias, VariableType type, int length) :
-        this(tableName, name, alias, Key.None, type, length, true, false, "") { }
+        this(tableName, name, alias, Key.None, type, length, true, false) { }
     public Column(string tableName, string name, string alias, VariableType type) :
-        this(tableName, name, alias, Key.None, type, 0, true, false, "") { }
+        this(tableName, name, alias, Key.None, type, 0, true, false) { }
 
     public Column(string tableName, string name, Key key, VariableType type, bool autoincrement) :
-        this(tableName, name, "", key, type, 0, true, autoincrement, "") { }
+        this(tableName, name, "", key, type, 0, true, autoincrement) { }
     public Column(string tableName, string name, Key key, VariableType type, int length, bool notNul) :
-        this(tableName, name, "", key, type, length, notNul, false, "") { }
+        this(tableName, name, "", key, type, length, notNul, false) { }
     public Column(string tableName, string name, Key key, VariableType type, int length) :
-        this(tableName, name, "",key, type, length, true, false, "") { }
+        this(tableName, name, "",key, type, length, true, false) { }
     public Column(string tableName, string name, Key key, VariableType type) :
-        this(tableName, name, "", key, type, 0, true, false, "") { }
+        this(tableName, name, "", key, type, 0, true, false) { }
 
     public Column(string tableName, string name, VariableType type, bool autoincrement) :
-        this(tableName, name, "", Key.None, type, 0, true, autoincrement, "") { }
+        this(tableName, name, "", Key.None, type, 0, true, autoincrement) { }
     public Column(string tableName, string name, VariableType type, int length, bool notNul) :
-        this(tableName, name, "", Key.None, type, length, notNul, false, "") { }
+        this(tableName, name, "", Key.None, type, length, notNul, false) { }
     public Column(string tableName, string name, VariableType type, int length) :
-        this(tableName, name, "", Key.None, type, length, true, false, "") { }
+        this(tableName, name, "", Key.None, type, length, true, false) { }
     public Column(string tableName, string name, VariableType type) :
-        this(tableName, name, "", Key.None, type, 0, true, false, "") { }
+        this(tableName, name, "", Key.None, type, 0, true, false) { }
 }
