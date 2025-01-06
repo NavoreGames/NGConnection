@@ -4,14 +4,17 @@ using NGConnection.Interfaces;
 
 namespace NGConnection;
 
-public abstract class Command
+public abstract class Command : ICommand
 {
-    protected string Query { get; set; }
-    protected string DataBaseName { get; set; }
-    protected string TableName { get; set; }
+    public string Query { get; protected set; }
+
+    public string Name { get; protected set; }
+
+    public string Alias { get; protected set; }
 
     public override string ToString() => Query;
-    public virtual ICommand SetCommand(Type connectionType) { return default; }
+
+    public virtual void SetValues(object entity) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetValues");
 
     protected static string GetTableName(object entity)
     {
@@ -26,24 +29,24 @@ public abstract class Command
                 .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Where(w => IsTypeValid(w.PropertyType));
     }
-    protected static string GetFields(IEnumerable<PropertyInfo> propertyInfos)
+    protected static string[] GetFields(IEnumerable<PropertyInfo> propertyInfos)
     {
         return
-            String.Join
-            (
-                ',',
-                propertyInfos
-                    .Select
-                    (
-                        s => ((s.GetCustomAttribute<ColumnPropertiesAttribute>()?.Name?.Trim() ?? "") != "") ? 
-                                s.GetCustomAttribute<ColumnPropertiesAttribute>().Name : 
-                                s.Name
-                    )
-            );
+            propertyInfos
+                .Select
+                (
+                    s => ((s.GetCustomAttribute<ColumnPropertiesAttribute>()?.Name?.Trim() ?? "") != "") ?
+                            s.GetCustomAttribute<ColumnPropertiesAttribute>().Name :
+                            s.Name
+                )
+                .ToArray();
     }
-    protected static string GetValues(object entity, IEnumerable<PropertyInfo> propertyInfos)
+    protected static string[] GetValues(object entity, IEnumerable<PropertyInfo> propertyInfos)
     {
-        return String.Join(',', propertyInfos.Select(s => GetValue(entity, s)));
+        return 
+            propertyInfos
+                .Select(s => GetValue(entity, s))
+                .ToArray();
     }
     protected static string GetValue(object entity, PropertyInfo propertyInfo)
     {

@@ -2,5 +2,5 @@
 
 public interface ICommand
 {
-    ICommand SetCommand(Type connectionType);
+
 }
