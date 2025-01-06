@@ -15,11 +15,23 @@ public class Insert : Command
         Values = values;
     }
 
-    public override void SetValues(object entity)
+    public override void SetValues(object source)
     {
-        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(entity);
+        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
         Fields = GetFields(propertyInfos);
-        Values = GetValues(entity, propertyInfos);
-        Name = GetTableName(entity);
+        Values = GetValues(source, propertyInfos);
+        Name = GetTableName(source);
     }
+
+  //  public override ICommandDml SetCommand(Type connectionType)
+  //  {
+  //      Command =
+  //      @$"
+		//INSERT INTO {Table}
+		//({Fields})
+		//VALUES
+		//({Values})
+  //      ";
+  //      return this;
+  //  }
 }

@@ -14,7 +14,7 @@ public abstract class Command : ICommand
 
     public override string ToString() => Query;
 
-    public virtual void SetValues(object entity) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetValues");
+    public virtual void SetValues(object source) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetValues");
 
     protected static string GetTableName(object entity)
     {
