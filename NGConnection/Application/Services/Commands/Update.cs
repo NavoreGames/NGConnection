@@ -21,6 +21,8 @@ public class Update : Command
     }
     public Update(string tableName, string[] fields, string[] values) :
         this(Guid.NewGuid(), tableName, fields, values) { }
+    public Update(Guid identifier) :
+        this(identifier, "", [], []) { }
     public Update() :
         this(Guid.NewGuid(), "", [], []) { }
 

@@ -17,6 +17,8 @@ public class Delete : Command
     }
     public Delete(string tableName) :
         this(Guid.NewGuid(), tableName) { }
+    public Delete(Guid identifier) :
+        this(identifier, "") { }
     public Delete() :
         this(Guid.NewGuid(), "") { }
 

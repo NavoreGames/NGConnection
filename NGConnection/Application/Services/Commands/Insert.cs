@@ -21,6 +21,8 @@ public class Insert : Command
     }
     public Insert(string tableName, string[] fields, string[] values) :
         this(Guid.NewGuid(), tableName, fields, values) { }
+    public Insert(Guid identifier) :
+        this(identifier, "", [], []) { }
     public Insert() :
         this(Guid.NewGuid(), "", [], []) { }
 
