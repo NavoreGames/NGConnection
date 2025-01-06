@@ -1,4 +1,5 @@
-﻿using NGConnection.Interfaces;
+﻿using Google.Protobuf.WellKnownTypes;
+using NGConnection.Interfaces;
 using NGConnection.Models;
 
 namespace NGConnection;
@@ -154,12 +155,26 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual IEnumerable<object> ExecuteReader(string commands) => ExecuteReader(false, commands);
 
-    public virtual bool ExecuteDdl(DataBase dataBase) { throw new NGException("", $"Method not implemented in child class", GetType().FullName + "/ExecuteDdl"); }
-
-    public virtual bool SetCommand()
+    public virtual string GetCommandInsert(Insert command)
     {
-        return default;
+        return
+            @$"
+		    INSERT INTO {command.Name}
+		    ({String.Join(',',command.Fields)})
+		    VALUES
+		    ({String.Join(',', command.Values)})
+            ";
     }
-
-
+    public virtual string GetCommandUpdate(Update command)
+    {
+        return 
+            @$"
+            UPDATE {command.Name} 
+            SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())}";
+    }
+    public virtual string GetCommandDelete(Delete command)
+    {
+        return
+            @$"DELETE FROM {command.Name}";
+    }
 }

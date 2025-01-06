@@ -2,5 +2,5 @@
 
 public interface ICommand
 {
-
+    void SetCommand(IConnection connection);
 }

@@ -1,24 +1,34 @@
-﻿namespace NGConnection;
+﻿using Mysqlx.Expr;
+using NGConnection.Enums;
+using NGConnection.Exceptions;
+using NGConnection.Interfaces;
+
+namespace NGConnection;
 
 public class Delete : Command
 {
     public Where Where { get; set; }
 
-    public Delete() { }
-    public Delete(string tableName)
+    public Delete(Guid identifier, string tableName)
     {
+        Identifier = identifier;
+        CommandType = DmlCommandType.Delete;
         Name = tableName;
     }
+    public Delete(string tableName) :
+        this(Guid.NewGuid(), tableName) { }
+    public Delete() :
+        this(Guid.NewGuid(), "") { }
 
     public override void SetValues(object source)
     {
         Name = GetTableName(source);
     }
+    public override void SetCommand(IConnection connection)
+    {
+        if (connection is not IConnectionDataBases)
+            throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
 
-    //public override ICommandDml SetCommand(Type connectionType)
-    //{
-    //    Command = @$"DELETE FROM {Table}";
-
-    //    return this;
-    //}
+        Query = ((IConnectionDataBases)connection).GetCommandDelete(this);
+    }
 }

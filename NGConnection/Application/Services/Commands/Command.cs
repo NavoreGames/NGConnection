@@ -6,6 +6,8 @@ namespace NGConnection;
 
 public abstract class Command : ICommand
 {
+    public Guid Identifier { get; protected set; }
+    public Enums.CommandType CommandType { get; protected set; }
     public string Query { get; protected set; }
 
     public string Name { get; protected set; }
@@ -15,6 +17,7 @@ public abstract class Command : ICommand
     public override string ToString() => Query;
 
     public virtual void SetValues(object source) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetValues");
+    public virtual void SetCommand(IConnection connection) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetCommand");
 
     protected static string GetTableName(object entity)
     {
