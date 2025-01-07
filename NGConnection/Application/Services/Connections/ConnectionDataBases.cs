@@ -155,6 +155,55 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual IEnumerable<object> ExecuteReader(string commands) => ExecuteReader(false, commands);
 
+    public virtual string GetCommandCreateDataBase(DataBase command)
+    {
+        return
+            @$"
+		    CREATE DATABASE {command.Name}
+            ";
+    }
+    public virtual string GetCommandAlterDataBase(DataBase command)
+    {
+        throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetCommandAlterDataBase");
+    }
+    public virtual string GetCommandDropDataBase(DataBase command)
+    {
+        return
+            @$"
+		    DROP DATABASE {command.Name}
+            ";
+    }
+    public virtual string GetCommandCreateTable(Table command)
+    {
+        return
+            @$"
+		    CREATE TABLE {command.Name}
+            ";
+    }
+    public virtual string GetCommandAlterTable(Table command)
+    {
+        throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetCommandAlterTable");
+    }
+    public virtual string GetCommandDropTable(Table command)
+    {
+        return
+            @$"
+		    DROP TABLE {command.Name}
+            ";
+    }
+    public virtual string GetCommandAddColumn(Column command)
+    {
+        throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetCommandAddColumn");
+    }
+    public virtual string GetCommandModifyColumn(Column command)
+    {
+        throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetCommandModifyColumn");
+    }
+    public virtual string GetCommandRemoveColumn(Column command)
+    {
+        throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetCommandRemoveColumn");
+    }
+
     public virtual string GetCommandInsert(Insert command)
     {
         return

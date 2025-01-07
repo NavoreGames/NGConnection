@@ -1,4 +1,6 @@
 ﻿using NGConnection.Enums;
+using NGConnection.Exceptions;
+using NGConnection.Interfaces;
 
 namespace NGConnection;
 
@@ -27,6 +29,7 @@ public class Column : Command
 		Key = key;
 	}
 
+    #region CONSTRUCTORS
     public Column(Guid identifier, Enums.CommandType commandType, Table table , string name, string alias, Key key, VariableType type, bool autoincrement) :
         this(identifier, commandType, table, name, alias, key, type, 0, true, autoincrement) { }
     public Column(Guid identifier, Enums.CommandType commandType, Table table , string name, string alias, Key key, VariableType type, int length, bool notNul) :
@@ -114,4 +117,18 @@ public class Column : Command
     public Column(Enums.CommandType commandType, Table table, string name, VariableType type) :
         this(Guid.NewGuid(), commandType, table, name, "", Key.None, type, 0, true, false)
     { }
+    #endregion
+
+    public override void SetCommand(IConnection connection)
+    {
+        if (connection is not IConnectionDataBases)
+            throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+
+        if (CommandType.Equals(Enums.DdlActionType.Add))
+            Query = ((IConnectionDataBases)connection).GetCommandAddColumn(this);
+        else if (CommandType.Equals(Enums.DdlActionType.Modify))
+            Query = ((IConnectionDataBases)connection).GetCommandModifyColumn(this);
+        else if (CommandType.Equals(Enums.DdlActionType.Remove))
+            Query = ((IConnectionDataBases)connection).GetCommandRemoveColumn(this);
+    }
 }
