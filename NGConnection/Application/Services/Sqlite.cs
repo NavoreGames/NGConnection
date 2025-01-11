@@ -20,12 +20,24 @@ public sealed class Sqlite : ConnectionDataBases
     {
 
     }
-    protected override string GetConnectionString() => Path.Combine(IpAddress, DataBaseName);
+    protected override string GetConnectionString() => $@"Data Source={Path.Combine(IpAddress, DataBaseName.Replace(".db", "", StringComparison.OrdinalIgnoreCase))}.db";
 
     public override bool OpenConnection(bool openTansaction = false)
     {
-        connection = new SqliteConnection(GetConnectionString());
+        string con = GetConnectionString();
+        connection = new SqliteConnection(con);
         return base.OpenConnection(openTansaction);
+    }
+
+    public override string GetCommandCreateDataBase(DataBase command)
+    {
+        OpenConnection();
+        CloseConnection();
+        return @$"-- DATABASE {command.Name} CREATE BY OPEN CONNECTION IN DB NAME";
+    }
+    public override string GetCommandCreateTable(Table command)
+    {
+        return @$"CREATE TABLE {command.Name}('')";
     }
 
     //private int Max(Type pTypeOf)

@@ -6,7 +6,7 @@ public abstract class Connection : IConnection
 {
     protected string ConnectionString { get; set; }
     protected string IpAddress { get; set; }
-    protected string DataBaseName { get; set; }
+    public string DataBaseName { get; protected set; }
     protected string UserName { get; set; }
     protected string Password { get; set; }
     protected string Port { get; set; }

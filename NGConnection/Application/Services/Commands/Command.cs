@@ -9,9 +9,8 @@ public abstract class Command : ICommand
     public Guid Identifier { get; protected set; }
     public Enums.CommandType CommandType { get; protected set; }
     public string Query { get; protected set; }
-
+    public IDbDataParameter[] DataParameter { get; protected set; }
     public string Name { get; protected set; }
-
     public string Alias { get; protected set; }
 
     public override string ToString() => Query;

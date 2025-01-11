@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using NGConnection;
 using NGConnection.Enums;
+using NGConnection.Interfaces;
 using NGConnection.Models;
 
 namespace Teste
@@ -27,11 +28,26 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            Mysql mysql1 = new Mysql("IpAddress", "DataBaseName", "UserName", "Password");
-            Mysql mysql2 = new Mysql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};");
+            ExecutarComandoDdl();
+        }
 
-            sqlite = new Sqlite("", "u758086818_NGTroia.db", "u758086818_NGTroia", "#Navore2019");
-            sqlite.TestConnection();
+        private void ExecutarComandoDdl()
+        {
+            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+            //sqlite.TestConnection();
+            
+            ICommand dataBase = new DataBase(DdlCommandType.Create, "DataBaseTeste");
+            dataBase.SetCommand(sqlite);
+            string s = dataBase.ToString();
+            ICommand table = new Table(DdlCommandType.Create, (DataBase)dataBase, "Teste");
+            dataBase.SetCommand(sqlite);
+
+        }
+        private void Teste()
+        {
+            Mysql mysql1 = new Mysql("IpAddress", "DataBaseName", "UserName", "Password");
+            Mysql mysql2 = new Mysql($@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut}");
+
 
             http = new Http("http://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
 
@@ -43,46 +59,23 @@ namespace Teste
             //http = new Http("http://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
             //ftp = new Ftp("ftp://navoregames.com/", "", "u758086818.ngtroia", "@ftpNgtroia1385@");
 
+
+
+            //IEnumerable<object> obj = sqlite.ExecuteReader(true, "Select * from Country");
+
+
             try
             {
 
 
                 //bool ret = mysql.TestConnection();
 
-               // byte[] bytes = ftp.Select(sqlite.DataBaseName);
+                // byte[] bytes = ftp.Select(sqlite.DataBaseName);
             }
             catch (Exception ex)
             {
 
             }
-        }
-
-        public void CreateDataBaseFromCode()
-        {
-            //DataBase dataBase =
-            //    new DataBase
-            //    (
-            //        "Teste",
-            //        new List<Table>()
-            //        {
-            //            new Table
-            //            (
-            //                "User", /// Alias, é o nome que ficará a propriedade na classe
-            //                "Usr001", /// Name, é o nome da tabela no banco
-            //                DdlCommandType.Create, /// DdlCommandType, é a ação que será feita na tabela
-            //                new List<Column>
-            //                (
-
-
-            //                )
-            //            ),
-
-            //        }
-            //    );
-
-            //DataBase dataBase = DataBase.Create("Teste", )
-
-
         }
     }
 }

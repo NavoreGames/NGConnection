@@ -2,5 +2,6 @@
 
 public interface IConnection
 {
-	void SetTimeOut(int timeOut);
+    string DataBaseName { get; }
+    void SetTimeOut(int timeOut);
 }

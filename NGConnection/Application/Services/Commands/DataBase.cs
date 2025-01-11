@@ -1,6 +1,7 @@
 ﻿using Mysqlx.Expr;
 using NGConnection.Exceptions;
 using NGConnection.Interfaces;
+using System.Text;
 
 namespace NGConnection;
 
@@ -19,12 +20,18 @@ public class DataBase : Command
     {
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+        if (!connection.DataBaseName.Equals(Name))
+            throw new DataBaseDivergent($"database name {Name} divergent from connection database name {connection.DataBaseName}.");
 
-        if(CommandType.Equals(Enums.DdlCommandType.Create))
-            Query = ((IConnectionDataBases)connection).GetCommandCreateDataBase(this);
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
+        if (CommandType.Equals(Enums.DdlCommandType.Create))
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandCreateDataBase(this));
         else if (CommandType.Equals(Enums.DdlCommandType.Alter))
-            Query = ((IConnectionDataBases)connection).GetCommandAlterDataBase(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandAlterDataBase(this));
         else if (CommandType.Equals(Enums.DdlCommandType.Drop))
-            Query = ((IConnectionDataBases)connection).GetCommandDropDataBase(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandDropDataBase(this));
+
+        Query = sb.ToString();
     }
 }

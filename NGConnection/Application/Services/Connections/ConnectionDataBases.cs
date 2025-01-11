@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using NGConnection.Interfaces;
 using NGConnection.Models;
+using System.Text;
 
 namespace NGConnection;
 
@@ -24,10 +25,10 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 
     public void Dispose()
     {
-        connection.Dispose();
-        command.Dispose();
-        transaction.Dispose();
-        dataReader.Dispose();
+        connection?.Dispose();
+        command?.Dispose();
+        transaction?.Dispose();
+        dataReader?.Dispose();
     }
     public bool TestConnection() => OpenConnection() | CloseConnection();
     public virtual bool OpenConnection(bool openTansaction = false)
@@ -157,10 +158,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 
     public virtual string GetCommandCreateDataBase(DataBase command)
     {
-        return
-            @$"
-		    CREATE DATABASE {command.Name}
-            ";
+        return @$"CREATE DATABASE {command.Name}";
     }
     public virtual string GetCommandAlterDataBase(DataBase command)
     {
@@ -168,17 +166,11 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual string GetCommandDropDataBase(DataBase command)
     {
-        return
-            @$"
-		    DROP DATABASE {command.Name}
-            ";
+        return @$"DROP DATABASE {command.Name}";
     }
     public virtual string GetCommandCreateTable(Table command)
     {
-        return
-            @$"
-		    CREATE TABLE {command.Name}
-            ";
+        return @$"CREATE TABLE {command.Name}";
     }
     public virtual string GetCommandAlterTable(Table command)
     {
@@ -186,10 +178,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual string GetCommandDropTable(Table command)
     {
-        return
-            @$"
-		    DROP TABLE {command.Name}
-            ";
+        return @$"DROP TABLE {command.Name}";
     }
     public virtual string GetCommandAddColumn(Column command)
     {
@@ -206,24 +195,24 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 
     public virtual string GetCommandInsert(Insert command)
     {
-        return
-            @$"
-		    INSERT INTO {command.Name}
-		    ({String.Join(',',command.Fields)})
-		    VALUES
-		    ({String.Join(',', command.Values)})
-            ";
+        StringBuilder stringBuilder = new();
+        stringBuilder.AppendLine($"INSERT INTO {command.Name}");
+        stringBuilder.AppendLine($"({String.Join(',', command.Fields)})");
+        stringBuilder.AppendLine($"VALUES");
+        stringBuilder.AppendLine($"({String.Join(',', command.Values)})");
+
+        return stringBuilder.ToString();
     }
     public virtual string GetCommandUpdate(Update command)
     {
-        return 
-            @$"
-            UPDATE {command.Name} 
-            SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())}";
+        StringBuilder stringBuilder = new();
+        stringBuilder.AppendLine($"UPDATE {command.Name} ");
+        stringBuilder.AppendLine($"SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())}");
+
+        return stringBuilder.ToString();
     }
     public virtual string GetCommandDelete(Delete command)
     {
-        return
-            @$"DELETE FROM {command.Name}";
+        return @$"DELETE FROM {command.Name}";
     }
 }
