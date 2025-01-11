@@ -38,9 +38,11 @@ namespace Teste
             
             ICommand dataBase = new DataBase(DdlCommandType.Create, "DataBaseTeste");
             dataBase.SetCommand(sqlite);
-            string s = dataBase.ToString();
+            
             ICommand table = new Table(DdlCommandType.Create, (DataBase)dataBase, "Teste");
-            dataBase.SetCommand(sqlite);
+            table.SetCommand(sqlite);
+
+            string s = table.ToString();
 
         }
         private void Teste()

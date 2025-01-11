@@ -1,9 +1,4 @@
-﻿using Mysqlx.Expr;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
-using System.Text;
-
-namespace NGConnection;
+﻿namespace NGConnection;
 
 public class DataBase : Command
 {

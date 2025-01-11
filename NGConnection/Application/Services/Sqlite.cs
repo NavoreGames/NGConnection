@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 
 namespace NGConnection;
 

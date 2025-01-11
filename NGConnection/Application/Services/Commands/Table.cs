@@ -1,8 +1,4 @@
-﻿using Mysqlx.Expr;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
-
-namespace NGConnection;
+﻿namespace NGConnection;
 
 public class Table : Command
 {
@@ -27,12 +23,19 @@ public class Table : Command
     {
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+        if (!connection.DataBaseName.Equals(DataBase.Name))
+            throw new DataBaseDivergent($"database name {Name} divergent from connection database name {connection.DataBaseName}.");
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
 
         if (CommandType.Equals(Enums.DdlCommandType.Create))
-            Query = ((IConnectionDataBases)connection).GetCommandCreateTable(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandCreateTable(this));
         else if (CommandType.Equals(Enums.DdlCommandType.Alter))
-            Query = ((IConnectionDataBases)connection).GetCommandAlterTable(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandAlterTable(this));
         else if (CommandType.Equals(Enums.DdlCommandType.Drop))
-            Query = ((IConnectionDataBases)connection).GetCommandDropTable(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandDropTable(this));
+
+        Query = sb.ToString();
     }
 }
