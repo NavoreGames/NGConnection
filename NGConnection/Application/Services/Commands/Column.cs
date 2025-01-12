@@ -123,12 +123,19 @@ public class Column : Command
     {
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+        if (!connection.DataBaseName.Equals(Table.DataBase.Name))
+            throw new DataBaseDivergent($"database name {Name} divergent from connection database name {connection.DataBaseName}.");
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
 
         if (CommandType.Equals(Enums.DdlActionType.Add))
-            Query = ((IConnectionDataBases)connection).GetCommandAddColumn(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandAddColumn(this));
         else if (CommandType.Equals(Enums.DdlActionType.Modify))
-            Query = ((IConnectionDataBases)connection).GetCommandModifyColumn(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandModifyColumn(this));
         else if (CommandType.Equals(Enums.DdlActionType.Remove))
-            Query = ((IConnectionDataBases)connection).GetCommandRemoveColumn(this);
+            sb.AppendLine(((IConnectionDataBases)connection).GetCommandRemoveColumn(this));
+
+        Query = sb.ToString();
     }
 }

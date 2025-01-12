@@ -13,6 +13,9 @@ public abstract class Connection : IConnection
     protected string TimeOut { get; set; }
     protected Dictionary<string, string> Properties { get; set; }
 
+
+    protected bool ddlCommandsActivated = false;
+
     public Connection(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
     {
         IpAddress = ipAddress;

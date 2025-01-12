@@ -28,16 +28,16 @@ public sealed class Sqlite : ConnectionDataBases
         return base.OpenConnection(openTansaction);
     }
 
-    public override string GetCommandCreateDataBase(DataBase command)
-    {
-        OpenConnection();
-        CloseConnection();
-        return @$"-- DATABASE {command.Name} CREATE BY OPEN CONNECTION IN DB NAME";
-    }
-    public override string GetCommandCreateTable(Table command)
-    {
-        return @$"CREATE TABLE {command.Name}('')";
-    }
+    //public override string GetCommandCreateDataBase(DataBase command)
+    //{
+    //    OpenConnection();
+    //    CloseConnection();
+    //    return @$"-- DATABASE {command.Name} CREATE BY OPEN CONNECTION IN DB NAME";
+    //}
+    //public override string GetCommandCreateTable(Table command)
+    //{
+    //    return @$"CREATE TABLE {command.Name}('')";
+    //}
 
     //private int Max(Type pTypeOf)
     //{
