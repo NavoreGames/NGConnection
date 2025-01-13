@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 using NGConnection;
 using NGConnection.Enums;
@@ -28,7 +30,9 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            ExecutarComandoDdl();
+            ExecutarComandoSelect();
+
+            //ExecutarComandoDdl();
         }
 
         private void ExecutarComandoDdl()
@@ -45,6 +49,29 @@ namespace Teste
 
             System.Diagnostics.Debug.WriteLine(table.ToString());
         }
+
+        private void ExecutarComandoInsert()
+        {
+            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+            //sqlite.TestConnection();
+            
+
+
+            //System.Diagnostics.Debug.WriteLine(table.ToString());
+        }
+        private void ExecutarComandoSelect()
+        {
+            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+            //sqlite.TestConnection();
+
+
+            var v = sqlite.ExecuteReader(true, "Select * from Teste where id = @id", new List<ConnectionParameter>() { new("@id", 1, DbType.Int32) }).ToList();
+
+
+            //System.Diagnostics.Debug.WriteLine(table.ToString());
+        }
+
+
         private void Teste()
         {
             Mysql mysql1 = new Mysql("IpAddress", "DataBaseName", "UserName", "Password");

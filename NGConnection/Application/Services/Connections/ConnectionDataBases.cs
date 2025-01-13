@@ -156,6 +156,46 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual IEnumerable<object> ExecuteReader(string commands) => ExecuteReader(false, commands);
 
+
+    public virtual IEnumerable<object> ExecuteReader(bool openConnection, string commands, List<ConnectionParameter> dataParameters)
+    {
+        IEnumerable<object> retorno = null;
+        DataTable dataTable = new DataTable();
+        ////// ABRE A CONEXÃO SE ESTIVER FECHADA  ///////
+        if (openConnection == true)
+            OpenConnection();
+        ////// EXECULTA O COMANDO SE A CONEXÃO FOI ABERTA COM SUCESSO. ////////////
+        if (connection.State == ConnectionState.Open)
+        {
+            if (commands.Trim() != "")
+            {
+                command = connection.CreateCommand();
+                command.CommandText = commands;
+                dataParameters.ForEach(f => { command.Parameters.Add((IDataParameter)f); });
+               
+                dataReader = command.ExecuteReader();
+                dataTable.Load(dataReader);
+                retorno = dataTable.AsEnumerable();
+                //while (dataReader.Read())
+                //{
+                //
+                //}
+
+                dataTable.Dispose();
+            }
+            ////// FECHA A CONEXÃO  ///////
+            if (openConnection == true)
+                CloseConnection();
+        }
+        else
+            return NGNotifier.AddWarning(Enumerable.Empty<object>(), "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
+
+        return retorno;
+    }
+
+
+
+
     public virtual string GetCommandCreateDataBase(DataBase command) =>
         throw new NGException("", "Method not implemented", GetType().FullName + "/GetCommandCreateDataBase");
     public virtual string GetCommandAlterDataBase(DataBase command) =>
