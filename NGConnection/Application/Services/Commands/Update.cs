@@ -18,6 +18,7 @@ public class Update : Command
         Name = tableName;
         Fields = fields;
         Values = values;
+        DataParameters = [];
     }
     public Update(string tableName, string[] fields, string[] values) :
         this(Guid.NewGuid(), tableName, fields, values) { }

@@ -11,6 +11,7 @@ public class Table : Command
         DataBase = dataBase;
         Name = name;
 		Alias = alias;
+        DataParameters = [];
     }
     public Table(Guid identifier, Enums.CommandType commandType, DataBase dataBase, string name) :
         this(identifier, commandType, dataBase, name, "") { }

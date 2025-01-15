@@ -7,6 +7,7 @@ public class DataBase : Command
         Identifier = identifier;
         CommandType = commandType;
         Name = name;
+        DataParameters = [];
     }
     public DataBase(Enums.CommandType commandType, string name) :
         this(Guid.NewGuid(), commandType, name) { }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using NGConnection.Attributes;
 using NGConnection.Interfaces;
+using NGConnection.Models;
 
 namespace NGConnection;
 
@@ -9,7 +10,7 @@ public abstract class Command : ICommand
     public Guid Identifier { get; protected set; }
     public Enums.CommandType CommandType { get; protected set; }
     public string Query { get; protected set; }
-    public IDbDataParameter[] DataParameter { get; protected set; }
+    public List<ConnectionParameter> DataParameters { get; protected set; }
     public string Name { get; protected set; }
     public string Alias { get; protected set; }
 

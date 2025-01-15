@@ -15,7 +15,8 @@ public class Column : Command
 	public bool Autoincrement { get; private set; }
     #endregion
 
-    public Column(Guid identifier, Enums.CommandType commandType, Table table , string name, string alias, Key key, VariableType type, int length, bool notNull, bool autoincrement)
+    public Column(Guid identifier, Enums.CommandType commandType, Table table , string name, string alias, 
+                    Key key, VariableType type, int length, bool notNull, bool autoincrement)
 	{
         Identifier = identifier;
         CommandType = commandType;
@@ -27,7 +28,8 @@ public class Column : Command
 		NotNull = notNull;
 		Autoincrement = autoincrement;
 		Key = key;
-	}
+        DataParameters = [];
+    }
 
     #region CONSTRUCTORS
     public Column(Guid identifier, Enums.CommandType commandType, Table table , string name, string alias, Key key, VariableType type, bool autoincrement) :

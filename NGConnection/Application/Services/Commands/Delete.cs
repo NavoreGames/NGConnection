@@ -14,6 +14,7 @@ public class Delete : Command
         Identifier = identifier;
         CommandType = DmlCommandType.Delete;
         Name = tableName;
+        DataParameters = [];
     }
     public Delete(string tableName) :
         this(Guid.NewGuid(), tableName) { }

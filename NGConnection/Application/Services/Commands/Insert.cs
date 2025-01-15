@@ -18,6 +18,7 @@ public class Insert : Command
         Name = tableName;
         Fields = fields;
         Values = values;
+        DataParameters = [];
     }
     public Insert(string tableName, string[] fields, string[] values) :
         this(Guid.NewGuid(), tableName, fields, values) { }
