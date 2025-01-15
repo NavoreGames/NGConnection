@@ -171,8 +171,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
             {
                 command = connection.CreateCommand();
                 command.CommandText = commands;
-                dataParameters.ForEach(f => { command.Parameters.Add((IDataParameter)f); });
-               
+                AddParameters(dataParameters);
                 dataReader = command.ExecuteReader();
                 dataTable.Load(dataReader);
                 retorno = dataTable.AsEnumerable();
@@ -237,5 +236,19 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     public virtual string GetCommandDelete(Delete command)
     {
         return @$"DELETE FROM {command.Name}";
+    }
+
+    private void AddParameters(List<ConnectionParameter> dataParameters)
+    {
+        dataParameters
+            .ForEach(
+                dataParameter => 
+                {
+                    command
+                        .Parameters
+                            .Add(dataParameter
+                                    .Parse(command.CreateParameter())); 
+                }
+            );
     }
 }

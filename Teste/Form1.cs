@@ -65,7 +65,7 @@ namespace Teste
             //sqlite.TestConnection();
 
 
-            var v = sqlite.ExecuteReader(true, "Select * from Teste where id = @id", new List<ConnectionParameter>() { new("@id", 1, DbType.Int32) }).ToList();
+            var v = sqlite.ExecuteReader(true, "Select * from Teste where id = @id", [new("@id", 1, DbType.Int32)]).ToList();
 
 
             //System.Diagnostics.Debug.WriteLine(table.ToString());

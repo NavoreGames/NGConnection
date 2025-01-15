@@ -22,8 +22,25 @@ namespace NGConnection.Models
             Value = value;
             Size = size;
             DbType = dbType;
+            Direction = ParameterDirection.Input;
+            SourceVersion = DataRowVersion.Default;
         }
         public ConnectionParameter(string parameterName, object value, DbType dbType) : 
             this(parameterName, value, 0, dbType) { }
+
+        internal IDbDataParameter Parse(IDbDataParameter dbDataParameter)
+        {
+            dbDataParameter.DbType = DbType;
+            dbDataParameter.Direction = Direction;
+            dbDataParameter.ParameterName = ParameterName;
+            dbDataParameter.SourceColumn = SourceColumn;
+            dbDataParameter.SourceVersion = SourceVersion;
+            dbDataParameter.Value = Value;
+            dbDataParameter.Precision = Precision;
+            dbDataParameter.Scale = Scale;
+            dbDataParameter.Size = Size;
+
+            return dbDataParameter;
+        }
     }
 }
