@@ -1,7 +1,5 @@
-﻿using NGConnection.Enums;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
-using NGConnection.Models;
+﻿using NGConnection.CrossCutting;
+using NGConnection.Enums;
 using System.Reflection;
 
 namespace NGConnection;
@@ -29,10 +27,10 @@ public class Insert : Command
 
     public override void SetValues(object source)
     {
-        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
-        Fields = GetFields(propertyInfos);
-        Values = GetValues(source, propertyInfos);
-        Name = GetTableName(source);
+        IEnumerable<PropertyInfo> propertyInfos = Generic.GetPropertyInfo(source);
+        Name = Generic.GetTableName(source);
+        Fields = Generic.GetFieldsName(propertyInfos);
+        Values = Generic.GetValues(source, propertyInfos);  
     }
     public override void SetCommand(IConnection connection)
     {

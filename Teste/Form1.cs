@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 using NGConnection;
 using NGConnection.Enums;
 using NGConnection.Interfaces;
 using NGConnection.Models;
+using NGEntity;
 
 namespace Teste
 {
@@ -30,6 +32,8 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
+            ExecutarComandoUpdate();
+
             ExecutarComandoSelect();
 
             //ExecutarComandoDdl();
@@ -48,6 +52,22 @@ namespace Teste
 
 
             System.Diagnostics.Debug.WriteLine(table.ToString());
+        }
+        private void ExecutarComandoUpdate()
+        {
+            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+            //sqlite.TestConnection();
+
+            //Update update = new Update();
+            //update.SetValues(new User());
+
+            int fk = 2;
+            Expression<Func<User, bool>> expression = user => (1==1 && user.IdUser == 1 && (user.FkAddress == fk || user.Email.Contains("fdsfsd"))); 
+            Where where = new Where();
+            //where.SetValues(new User());
+            where.SetValues(expression);
+
+            //System.Diagnostics.Debug.WriteLine(table.ToString());
         }
 
         private void ExecutarComandoInsert()

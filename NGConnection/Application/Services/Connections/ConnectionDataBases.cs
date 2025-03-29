@@ -193,8 +193,6 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
 
 
-
-
     public virtual string GetCommandCreateDataBase(DataBase command) =>
         throw new NGException("", "Method not implemented", GetType().FullName + "/GetCommandCreateDataBase");
     public virtual string GetCommandAlterDataBase(DataBase command) =>
@@ -237,7 +235,11 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         return @$"DELETE FROM {command.Name}";
     }
-
+    public virtual string GetCommandWhere(Where command)
+    {
+        return command.ExpressionData.GetQuery();
+    }
+    
     private void AddParameters(List<ConnectionParameter> dataParameters)
     {
         dataParameters

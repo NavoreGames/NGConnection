@@ -27,4 +27,5 @@ public interface IConnectionDataBases : IConnection
     string GetCommandInsert(Insert command);
     string GetCommandUpdate(Update command);
     string GetCommandDelete(Delete command);
+    string GetCommandWhere(Where command);
 }

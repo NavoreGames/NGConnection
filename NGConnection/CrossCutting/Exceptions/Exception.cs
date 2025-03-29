@@ -13,4 +13,9 @@ namespace NGConnection.Exceptions
         public DataBaseDivergent(string header, string message) : base(header, message, "") { }
         public DataBaseDivergent(string message) : base("", message) { }
     }
+    public class ExpressionNotImplemented : NGException
+    {
+        public ExpressionNotImplemented(string header, string message) : base(header, message, "") { }
+        public ExpressionNotImplemented(string message) : base("", message) { }
+    }
 }

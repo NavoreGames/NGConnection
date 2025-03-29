@@ -1,6 +1,5 @@
-﻿using NGConnection.Enums;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
+﻿using NGConnection.CrossCutting;
+using NGConnection.Enums;
 using System.Reflection;
 
 namespace NGConnection;
@@ -19,6 +18,7 @@ public class Update : Command
         Fields = fields;
         Values = values;
         DataParameters = [];
+        Where = new Where();
     }
     public Update(string tableName, string[] fields, string[] values) :
         this(Guid.NewGuid(), tableName, fields, values) { }
@@ -29,10 +29,11 @@ public class Update : Command
 
     public override void SetValues(object source)
     {
-        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
-        Fields = GetFields(propertyInfos);
-        Values = GetValues(source, propertyInfos);
-        Name = GetTableName(source);
+        IEnumerable<PropertyInfo> propertyInfos = Generic.GetPropertyInfo(source);
+        Name = Generic.GetTableName(source);
+        Fields = Generic.GetFieldsName(propertyInfos);
+        Values = Generic.GetValues(source, propertyInfos);
+        Where.SetValues(source);
     }
     public override void SetCommand(IConnection connection)
     {

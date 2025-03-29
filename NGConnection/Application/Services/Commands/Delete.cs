@@ -1,7 +1,5 @@
-﻿using Mysqlx.Expr;
+﻿using NGConnection.CrossCutting;
 using NGConnection.Enums;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
 
 namespace NGConnection;
 
@@ -15,6 +13,7 @@ public class Delete : Command
         CommandType = DmlCommandType.Delete;
         Name = tableName;
         DataParameters = [];
+        Where = new Where();
     }
     public Delete(string tableName) :
         this(Guid.NewGuid(), tableName) { }
@@ -25,7 +24,8 @@ public class Delete : Command
 
     public override void SetValues(object source)
     {
-        Name = GetTableName(source);
+        Name = Generic.GetTableName(source);
+        Where.SetValues(source);
     }
     public override void SetCommand(IConnection connection)
     {
