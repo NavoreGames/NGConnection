@@ -37,6 +37,11 @@ public class Insert : Command
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
 
-        Query = ((IConnectionDataBases)connection).GetCommandInsert(this);
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
+
+        sb.AppendLine(((IConnectionDataBases)connection).GetCommandInsert(this));
+
+        Query = sb.ToString();
     }
 }

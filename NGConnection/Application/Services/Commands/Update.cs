@@ -40,10 +40,12 @@ public class Update : Command
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
 
-        StringBuilder stringBuilder = new();
-        stringBuilder.AppendLine(((IConnectionDataBases)connection).GetCommandUpdate(this));
-        stringBuilder.AppendLine(((IConnectionDataBases)connection).GetCommandWhere(Where));
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
 
-        Query = stringBuilder.ToString();
+        sb.AppendLine(((IConnectionDataBases)connection).GetCommandUpdate(this));
+        sb.AppendLine(((IConnectionDataBases)connection).GetCommandWhere(Where));
+
+        Query = sb.ToString();
     }
 }

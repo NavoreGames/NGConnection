@@ -32,10 +32,12 @@ public class Delete : Command
         if (connection is not IConnectionDataBases)
             throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
 
-        StringBuilder stringBuilder = new();
-        stringBuilder.AppendLine(((IConnectionDataBases)connection).GetCommandDelete(this));
-        stringBuilder.AppendLine(((IConnectionDataBases)connection).GetCommandWhere(Where));
-        
-        Query = stringBuilder.ToString();
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
+
+        sb.AppendLine(((IConnectionDataBases)connection).GetCommandDelete(this));
+        sb.AppendLine(((IConnectionDataBases)connection).GetCommandWhere(Where));
+
+        Query = sb.ToString();
     }
 }

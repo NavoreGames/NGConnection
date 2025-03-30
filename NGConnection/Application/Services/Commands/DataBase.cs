@@ -21,6 +21,7 @@ public class DataBase : Command
 
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");
+
         if (CommandType.Equals(Enums.DdlCommandType.Create))
             sb.AppendLine(((IConnectionDataBases)connection).GetCommandCreateDataBase(this));
         else if (CommandType.Equals(Enums.DdlCommandType.Alter))
