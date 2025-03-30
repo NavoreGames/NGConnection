@@ -227,13 +227,13 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         StringBuilder stringBuilder = new();
         stringBuilder.AppendLine($"UPDATE {command.Name} ");
-        stringBuilder.AppendLine($"SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())}");
+        stringBuilder.AppendLine($"SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())} ");
 
         return stringBuilder.ToString();
     }
     public virtual string GetCommandDelete(Delete command)
     {
-        return @$"DELETE FROM {command.Name}";
+        return @$"DELETE FROM {command.Name} ";
     }
     public virtual string GetCommandWhere(Where command)
     {
