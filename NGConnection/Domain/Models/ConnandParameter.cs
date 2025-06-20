@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace NGConnection.Models
 {
-    public class ConnectionParameter : IDataParameter
+    public class ConnandParameter : IDataParameter
     {
         public DbType DbType { get; set; }
         public ParameterDirection Direction { get; set; }
@@ -16,7 +16,7 @@ namespace NGConnection.Models
         public byte Scale { get; set; }
         public int Size { get; set; }
 
-        public ConnectionParameter(string parameterName, object value, int size, DbType dbType)
+        public ConnandParameter(string parameterName, object value, int size, DbType dbType)
         {
             ParameterName = parameterName;
             Value = value;
@@ -25,7 +25,7 @@ namespace NGConnection.Models
             Direction = ParameterDirection.Input;
             SourceVersion = DataRowVersion.Default;
         }
-        public ConnectionParameter(string parameterName, object value, DbType dbType) : 
+        public ConnandParameter(string parameterName, object value, DbType dbType) : 
             this(parameterName, value, 0, dbType) { }
 
         internal IDbDataParameter Parse(IDbDataParameter dbDataParameter)

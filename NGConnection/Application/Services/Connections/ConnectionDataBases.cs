@@ -1,197 +1,134 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using Mysqlx.Prepare;
+using NGConnection.Domain.Models;
 using NGConnection.Interfaces;
 using NGConnection.Models;
+using System.Data;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace NGConnection;
 
 public abstract class ConnectionDataBases : Connection, IConnectionDataBases
 {
-    protected IDbConnection connection;
-    protected IDbCommand command;
-    protected IDbTransaction transaction;
+    protected IDbConnection dbConnection;
+    protected IDbCommand dbCommand;
+    protected IDbTransaction dbTransaction;
+    protected bool HasTransaction;
     protected IDataReader dataReader;
 
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
-        : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
+        : this(ipAddress, dataBaseName, userName, password, port, timeOut, []) { }
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port)
-        : base(ipAddress, dataBaseName, userName, password, port) { }
+        : this(ipAddress, dataBaseName, userName, password, port, 0) { }
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password)
-        : base(ipAddress, dataBaseName, userName, password) { }
+        : this(ipAddress, dataBaseName, userName, password, 0) { }
     public ConnectionDataBases(string connectionString)
         : base(connectionString) { }
 
     public void Dispose()
     {
-        connection?.Dispose();
-        command?.Dispose();
-        transaction?.Dispose();
         dataReader?.Dispose();
+        dataReader = null;
+        dbCommand?.Dispose();
+        dbCommand = null;
+        dbTransaction?.Dispose();
+        dbTransaction = null;
     }
     public bool TestConnection() => OpenConnection() | CloseConnection();
-    public virtual bool OpenConnection(bool openTansaction = false)
+    public virtual bool OpenConnection()
     {
-        connection.Open();
-        if (connection.State != ConnectionState.Open)
-            throw new NGException("", $"Unable to open connection, connection is {connection.State}", GetType().FullName + "/OpenConnection");
-
-        transaction = null;
-        if (openTansaction == true)
-        {
-            transaction = connection.BeginTransaction();
-            if (transaction == null)
-            {
-                CloseConnection();
-                throw new NGException("", $"Unable to open transaction", GetType().FullName + "/OpenConnection");
-            }
-        }
+        if(dbConnection.State != ConnectionState.Open)
+            dbConnection.Open();
+        if (dbConnection.State != ConnectionState.Open)
+            throw new NGException("", $"Unable to open connection, connection is {dbConnection.State}", GetType().FullName + "/OpenConnection");
 
         return true;
     }
     public virtual bool CloseConnection()
     {
-        connection.Close();
-        Dispose();
+        if (!HasTransaction)
+        {
+            dbConnection?.Close();
+            Dispose();
+        }
 
         return true;
     }
-
-    public virtual int ExecuteNonQuery(bool openConnection, bool tansaction, params string[] commands)
+    public virtual void BeginTransaction()
     {
-        int retorno = 0;
+        OpenConnection();
+        dbTransaction = dbConnection.BeginTransaction();
+        HasTransaction = true;
+    }
+    public virtual void CommitTransaction()
+    {
+        dbTransaction?.Commit();
+        HasTransaction = false;
+        CloseConnection();
+    }
+    public virtual void RollbackTransaction()
+    {
+        dbTransaction?.Rollback();
+        HasTransaction = false;
+        CloseConnection();
+    }
 
-        ////// ABRE A CONEXÃO SE ESTIVER FECHADA  ///////
-        if (openConnection == true)
-            OpenConnection(tansaction);
-        ////// EXECULTA O COMANDO SE A CONEXÃO FOI ABERTA COM SUCESSO. ////////////
-        if (connection.State == ConnectionState.Open)
-        {
-            command = connection.CreateCommand();
-            /////// FOI DIVIDIDO O COMANDO PQ O SQLITE NÃO ACEITA MULTIPLOS COMANDOS SEPARADO POR ; ///////
-            foreach (string loopCommand in commands)
-            {
-                if (loopCommand.Trim() != "")
+    public virtual IDataReader ExecuteReader(string command, List<ConnandParameter> dataParameters)
+    {
+        PrepareExecute(command, dataParameters);
+        var observableDataReader = new ObservableDataReader(dbCommand.ExecuteReader());
+
+        observableDataReader.OnCompleted += OnDataDeaderIsCompleted;
+
+        dataReader = observableDataReader;
+
+        return dataReader;
+    }
+    public virtual IDataReader ExecuteReader(ICommand command) => 
+        ExecuteReader(command?.Query ?? "", command?.DataParameters);
+    public virtual int ExecuteNonQuery(string command, List<ConnandParameter> dataParameters)
+    {
+        PrepareExecute(command, dataParameters);
+        int retorno = dbCommand.ExecuteNonQuery();
+
+        CloseConnection();
+
+        return retorno;
+    }
+    public virtual int ExecuteNonQuery(ICommand command) => 
+        ExecuteNonQuery(command?.Query ?? "", command?.DataParameters);
+
+    private void PrepareExecute(string command, List<ConnandParameter> dataParameters)
+    {
+        OpenConnection();
+        if (dbConnection?.State != ConnectionState.Open)
+            throw new InvalidOperationException("A conexão com o banco não está aberta.");
+
+        if (string.IsNullOrWhiteSpace(command))
+            throw new ArgumentException("A consulta SQL está vazia.");
+
+        dbCommand = dbConnection.CreateCommand();
+        dbCommand.CommandText = command;
+
+        AddParameters(dbCommand, dataParameters);
+    }
+    private static void AddParameters(IDbCommand dbCommand, List<ConnandParameter> dataParameters)
+    {
+        dataParameters
+            .ForEach(
+                dataParameter =>
                 {
-                    command.CommandText = loopCommand;
-                    retorno = command.ExecuteNonQuery();
+                    dbCommand.Parameters
+                        .Add(dataParameter
+                            .Parse(dbCommand.CreateParameter()));
                 }
-            }
-
-            ////// FECHA A CONEXÃO  ///////
-            if (openConnection == true)
-                CloseConnection();
-        }
-        else
-            return NGNotifier.AddWarning(-1, "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
-
-        return retorno;
+            );
     }
-    public virtual int ExecuteNonQuery(bool openConnection, params string[] commands) => ExecuteNonQuery(openConnection, false, commands);
-    public virtual int ExecuteNonQuery(params string[] commands) => ExecuteNonQuery(false, false, commands);
-    public virtual object ExecuteScalar(bool openConnection, bool tansaction, params string[] commands)
-    {
-        object retorno = null;
-        ////// ABRE A CONEXÃO SE ESTIVER FECHADA  ///////
-        if (openConnection == true)
-            OpenConnection(tansaction);
-        ////// EXECULTA O COMANDO SE A CONEXÃO FOI ABERTA COM SUCESSO. ////////////
-        if (connection.State == ConnectionState.Open)
-        {
-            command = connection.CreateCommand();
-            /////// FOI DIVIDIDO O COMANDO PQ O SQLITE NÃO ACEITA MULTIPLOS COMANDOS SEPARADO POR ; ///////
-            foreach (string loopCommand in commands)
-            {
-                if (loopCommand.Trim() != "")
-                {
-                    command.CommandText = loopCommand;
-                    retorno = command.ExecuteScalar();
-                }
-            }
-
-            ////// FECHA A CONEXÃO  ///////
-            if (openConnection == true)
-                CloseConnection();
-        }
-        else
-            return NGNotifier.AddWarning<object>("Connection is not open", "try open connection with method OpenConnection(), or use other overload");
-
-        return retorno;
-    }
-    public virtual object ExecuteScalar(bool openConnection, params string[] commands) => ExecuteScalar(openConnection, false, commands);
-    public virtual object ExecuteScalar(params string[] commands) => ExecuteScalar(false, false, commands);
-    public virtual IEnumerable<object> ExecuteReader(bool openConnection, string commands)
-    {
-        IEnumerable<object> retorno = null;
-        DataTable dataTable = new DataTable();
-        ////// ABRE A CONEXÃO SE ESTIVER FECHADA  ///////
-        if (openConnection == true)
-            OpenConnection();
-        ////// EXECULTA O COMANDO SE A CONEXÃO FOI ABERTA COM SUCESSO. ////////////
-        if (connection.State == ConnectionState.Open)
-        {
-            if (commands.Trim() != "")
-            {
-                command = connection.CreateCommand();
-                command.CommandText = commands;
-                dataReader = command.ExecuteReader();
-                dataTable.Load(dataReader);
-                retorno = dataTable.AsEnumerable();
-                //while (dataReader.Read())
-                //{
-                //
-                //}
-
-                dataTable.Dispose();
-            }
-            ////// FECHA A CONEXÃO  ///////
-            if (openConnection == true)
-                CloseConnection();
-        }
-        else
-            return NGNotifier.AddWarning(Enumerable.Empty<object>(), "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
-
-        return retorno;
-    }
-    public virtual IEnumerable<object> ExecuteReader(string commands) => ExecuteReader(false, commands);
-
-
-    public virtual IEnumerable<object> ExecuteReader(bool openConnection, string commands, List<ConnectionParameter> dataParameters)
-    {
-        IEnumerable<object> retorno = null;
-        DataTable dataTable = new DataTable();
-        ////// ABRE A CONEXÃO SE ESTIVER FECHADA  ///////
-        if (openConnection == true)
-            OpenConnection();
-        ////// EXECULTA O COMANDO SE A CONEXÃO FOI ABERTA COM SUCESSO. ////////////
-        if (connection.State == ConnectionState.Open)
-        {
-            if (commands.Trim() != "")
-            {
-                command = connection.CreateCommand();
-                command.CommandText = commands;
-                AddParameters(dataParameters);
-                dataReader = command.ExecuteReader();
-                dataTable.Load(dataReader);
-                retorno = dataTable.AsEnumerable();
-                //while (dataReader.Read())
-                //{
-                //
-                //}
-
-                dataTable.Dispose();
-            }
-            ////// FECHA A CONEXÃO  ///////
-            if (openConnection == true)
-                CloseConnection();
-        }
-        else
-            return NGNotifier.AddWarning(Enumerable.Empty<object>(), "Connection is not open", "try open connection with method OpenConnection(), or use other overload");
-
-        return retorno;
-    }
-
+    private void OnDataDeaderIsCompleted() =>
+        CloseConnection();
 
     public virtual string GetCommandCreateDataBase(DataBase command) =>
         throw new NGException("", "Method not implemented", GetType().FullName + "/GetCommandCreateDataBase");
@@ -237,20 +174,6 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual string GetCommandWhere(Where command)
     {
-        return command.ExpressionData.GetQuery();
-    }
-    
-    private void AddParameters(List<ConnectionParameter> dataParameters)
-    {
-        dataParameters
-            .ForEach(
-                dataParameter => 
-                {
-                    command
-                        .Parameters
-                            .Add(dataParameter
-                                    .Parse(command.CreateParameter())); 
-                }
-            );
-    }
+        return $"WHERE {command.ExpressionData.GetQuery()}";
+    } 
 }

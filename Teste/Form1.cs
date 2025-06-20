@@ -32,11 +32,65 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            ExecutarComandoUpdate();
+            //ExecutarComandoUpdate();
 
-            ExecutarComandoSelect();
+            //ExecutarComandoSelect();
 
             //ExecutarComandoDdl();
+
+            ExecutarComando();
+        }
+
+        private void ExecutarComando()
+        {
+            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+            //sqlite.TestConnection();
+            //sqlite.OpenConnection();
+
+            //sqlite.BeginTransaction();
+
+            ICommand command = new Command("select * from teste");
+            using var reader = sqlite.ExecuteReader(command);
+
+            List<object> retorno = [];
+            while (reader.Read())
+            {
+                object[] values = new object[reader.FieldCount];
+                reader.GetValues(values);
+                retorno.Add(values);
+            }
+
+            command = new Command("update teste set text = 'terceiro' where id = 3");
+            var v1 = sqlite.ExecuteNonQuery(command);
+            
+            //sqlite.CommitTransaction();
+
+            //ICommand command = new Command("select * from teste");
+            //ICommand command = new Command("update teste set text = 'terceiro' where id = @Id");
+            //command.DataParameters = new() { new ConnandParameter("@Id", 3, DbType.Int16) };
+
+            //var v = sqlite.Execute(command);
+
+            //for (int i = 100; i < 10000; i++)
+            //{
+            //    ICommand command = new Command($"insert into teste select null,'Elemento{i}'");
+            //    sqlite.Execute(command);
+            //}
+
+
+            //sqlite.CloseConnection();
+            //System.Diagnostics.Debug.WriteLine(table.ToString());
+
+
+            //using var reader = sqlite.ExecuteReader(command);
+
+            //List<object> retorno = [];
+            //while (reader.Read())
+            //{
+            //    object[] values = new object[reader.FieldCount];
+            //    reader.GetValues(values);
+            //    retorno.Add(values);
+            //}
         }
 
         private void ExecutarComandoDdl()
@@ -66,6 +120,8 @@ namespace Teste
             Where where = new Where();
             //where.SetValues(new User());
             where.SetValues(expression);
+            where.SetCommand(sqlite);
+            string s = where.ToString();
 
             //System.Diagnostics.Debug.WriteLine(table.ToString());
         }
@@ -74,7 +130,6 @@ namespace Teste
         {
             sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
             //sqlite.TestConnection();
-            
 
 
             //System.Diagnostics.Debug.WriteLine(table.ToString());
@@ -85,7 +140,7 @@ namespace Teste
             //sqlite.TestConnection();
 
 
-            var v = sqlite.ExecuteReader(true, "Select * from Teste where id = @id", [new("@id", 1, DbType.Int32)]).ToList();
+            var v = sqlite.ExecuteReader("Select * from Teste where id = @id", [new("@id", 1, DbType.Int32)]);
 
 
             //System.Diagnostics.Debug.WriteLine(table.ToString());

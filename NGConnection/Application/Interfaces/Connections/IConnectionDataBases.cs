@@ -1,19 +1,22 @@
-﻿namespace NGConnection.Interfaces;
+﻿using NGConnection.Domain.Models;
+using NGConnection.Models;
+using System.Data.Common;
+
+namespace NGConnection.Interfaces;
 
 public interface IConnectionDataBases : IConnection
 {
     bool TestConnection();
-    bool OpenConnection(bool openTansaction = false);
+    bool OpenConnection();
     bool CloseConnection();
+    void BeginTransaction();
+    void CommitTransaction();
+    void RollbackTransaction();
 
-    int ExecuteNonQuery(bool openConnection, bool tansaction, params string[] commands);
-    int ExecuteNonQuery(bool openConnection, params string[] commands);
-    int ExecuteNonQuery(params string[] commands);
-    object ExecuteScalar(bool openConnection, bool tansaction, params string[] commands);
-    object ExecuteScalar(bool openConnection, params string[] commands);
-    object ExecuteScalar(params string[] commands);
-    IEnumerable<object> ExecuteReader(bool openConnection, string commands);
-    IEnumerable<object> ExecuteReader(string commands);
+    IDataReader ExecuteReader(string command, List<ConnandParameter> dataParameters);
+    IDataReader ExecuteReader(ICommand command);
+    int ExecuteNonQuery(string command, List<ConnandParameter> dataParameters);
+    int ExecuteNonQuery(ICommand command);
 
     string GetCommandCreateDataBase(DataBase command);
     string GetCommandAlterDataBase(DataBase command);

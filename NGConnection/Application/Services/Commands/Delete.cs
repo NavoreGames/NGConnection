@@ -30,7 +30,7 @@ public class Delete : Command
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)
-            throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+            throw new InvalidConnection(connection.GetType());
 
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");

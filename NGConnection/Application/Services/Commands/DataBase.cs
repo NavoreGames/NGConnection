@@ -15,9 +15,9 @@ public class DataBase : Command
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)
-            throw new InvalidConnection($"{connection.GetType()} is an invalid connection.");
+            throw new InvalidConnection(connection.GetType());
         if (!connection.DataBaseName.Equals(Name))
-            throw new DataBaseDivergent($"database name {Name} divergent from connection database name {connection.DataBaseName}.");
+            throw new DataBaseDivergent(this, connection);
 
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"-- {connection.GetType().Name.ToUpper()} COMMAND");

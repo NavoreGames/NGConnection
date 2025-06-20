@@ -53,6 +53,8 @@ namespace NGConnection.CrossCutting
         {
             var typeCode = Type.GetTypeCode(GetNullableType(fieldInfo.FieldType));
             object value = Expression.Lambda(expression.Expression).Compile().DynamicInvoke();
+            value = fieldInfo.GetValue(value);
+
             return GetValueFormated(typeCode, value);
         }
         internal static string GetValue(MethodCallExpression expression)

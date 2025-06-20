@@ -15,5 +15,5 @@ public sealed class Mongodb : ConnectionDataBases
 
     protected override void SetConnectionString(string ConnectionString) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetConnectionString");
     protected override string GetConnectionString() => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/GetConnectionString");
-    public override bool OpenConnection(bool openTansaction = false) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/OpenConnection");
+    public override bool OpenConnection() => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/OpenConnection");
 }

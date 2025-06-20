@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using NGConnection.Attributes;
 using NGConnection.CrossCutting;
+using Google.Protobuf.WellKnownTypes;
 
 namespace NGConnection.Models;
 
@@ -98,11 +99,11 @@ public class ExpressionData
     }
     private void SetExpression(BinaryExpression expression)
     {
-        Query += "(";
+        SetBracket(true, expression.NodeType);
         SetExpression(expression.Left);
         Query += $" {GetOperation(expression.NodeType)} ";
         SetExpression(expression.Right);
-        Query += ")";
+        SetBracket(false, expression.NodeType);
     }
     private void SetExpression(ParameterExpression expression)
     {
@@ -152,7 +153,9 @@ public class ExpressionData
     {
         return value switch
         {
+            ExpressionType.And or
             ExpressionType.AndAlso => "AND",
+            ExpressionType.Or or
             ExpressionType.OrElse => "OR",
             ExpressionType.Equal => "=",
             ExpressionType.NotEqual => "<>",
@@ -162,5 +165,14 @@ public class ExpressionData
             ExpressionType.LessThanOrEqual => "<=",
             _ => value.ToString()
         };
+    }
+    private void SetBracket(bool open, ExpressionType expressionType)
+    {
+        if (open == true && expressionType is (ExpressionType.And or ExpressionType.AndAlso or
+                                                ExpressionType.Or or ExpressionType.OrElse))
+            Query += "(";
+        else if (open == false && expressionType is (ExpressionType.And or ExpressionType.AndAlso or
+                                                ExpressionType.Or or ExpressionType.OrElse))
+            Query += ")";
     }
 }

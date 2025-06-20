@@ -5,15 +5,15 @@ namespace NGConnection;
 public sealed class Mysql : ConnectionDataBases
 {
     public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
-        : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
+        : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { dbConnection = new MySqlConnection(GetConnectionString()); }
     public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
-        : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
+        : this(ipAddress, dataBaseName, userName, password, port, timeOut, []) { }
     public Mysql(string ipAddress, string dataBaseName, string userName, string password, int port)
-        : base(ipAddress, dataBaseName, userName, password, port) { }
+        : this(ipAddress, dataBaseName, userName, password, port, 0) { }
     public Mysql(string ipAddress, string dataBaseName, string userName, string password)
-        : base(ipAddress, dataBaseName, userName, password) { }
+        : this(ipAddress, dataBaseName, userName, password, 0) { }
     public Mysql(string connectionString)
-        : base(connectionString) { }
+        : base(connectionString) { dbConnection = new MySqlConnection(GetConnectionString()); }
 
     protected override void SetConnectionString(string ConnectionString)
     {
@@ -28,12 +28,6 @@ public sealed class Mysql : ConnectionDataBases
     }
 
     protected override string GetConnectionString() => $@"Server = {IpAddress}; Database = {DataBaseName}; Uid = {UserName}; Pwd = {Password}; Connection Timeout = {TimeOut};";
-
-    public override bool OpenConnection(bool openTansaction = false)
-    {
-        connection = new MySqlConnection(GetConnectionString());
-        return base.OpenConnection(openTansaction);
-    }
 
     //private int Max(Type pTypeOf)
     //{

@@ -5,28 +5,21 @@ namespace NGConnection;
 public sealed class Sqlite : ConnectionDataBases
 {
     public Sqlite(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
-        : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
+        : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { dbConnection = new SqliteConnection(GetConnectionString()); }
     public Sqlite(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
-        : base(ipAddress, dataBaseName, userName, password, port, timeOut) { }
+        : this(ipAddress, dataBaseName, userName, password, port, timeOut, []) { }
     public Sqlite(string ipAddress, string dataBaseName, string userName, string password, int port)
-        : base(ipAddress, dataBaseName, userName, password, port) { }
+        : this(ipAddress, dataBaseName, userName, password, port, 0) { }
     public Sqlite(string ipAddress, string dataBaseName, string userName, string password)
-        : base(ipAddress, dataBaseName, userName, password) { }
+        : this(ipAddress, dataBaseName, userName, password, 0) { }
     public Sqlite(string connectionString)
-        : base(connectionString) { }
+        : base(connectionString) { dbConnection = new SqliteConnection(GetConnectionString()); }
 
     protected override void SetConnectionString(string ConnectionString)
     {
 
     }
     protected override string GetConnectionString() => $@"Data Source={Path.Combine(IpAddress, DataBaseName.Replace(".db", "", StringComparison.OrdinalIgnoreCase))}.db";
-
-    public override bool OpenConnection(bool openTansaction = false)
-    {
-        string con = GetConnectionString();
-        connection = new SqliteConnection(con);
-        return base.OpenConnection(openTansaction);
-    }
 
     //public override string GetCommandCreateDataBase(DataBase command)
     //{
