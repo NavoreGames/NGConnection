@@ -1,4 +1,5 @@
-﻿using NGConnection.CrossCutting;
+﻿using NGConnection.Attributes;
+using NGConnection.CrossCutting;
 using NGConnection.Enums;
 using System.Reflection;
 
