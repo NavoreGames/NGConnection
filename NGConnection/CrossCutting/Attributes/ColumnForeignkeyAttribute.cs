@@ -18,7 +18,7 @@ public class ColumnForeignkeyAttribute : ColumnPropertiesAttribute
     { }
 
     public ColumnForeignkeyAttribute(int length, Type table) :
-      this(null, 0, table)
+      this(null, length, table)
     { }
     public ColumnForeignkeyAttribute(Type table) :
       this(0, table)

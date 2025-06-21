@@ -27,4 +27,6 @@ public class ColumnUniquekeyAttribute : ColumnPropertiesAttribute
     public ColumnUniquekeyAttribute(bool notNull) :
         this(0, notNull)
     { }
+    public ColumnUniquekeyAttribute()
+    { }
 }

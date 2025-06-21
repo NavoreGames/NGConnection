@@ -32,4 +32,6 @@ public class ColumnPrimarykeyAttribute : ColumnPropertiesAttribute
     public ColumnPrimarykeyAttribute(bool autoIncrement) :
       this(0, autoIncrement)
     { }
+    public ColumnPrimarykeyAttribute()
+    { }
 }
