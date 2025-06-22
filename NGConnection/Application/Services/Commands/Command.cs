@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 using NGConnection.Attributes;
+using NGConnection.CrossCutting;
 using NGConnection.Interfaces;
 using NGConnection.Models;
 
@@ -56,4 +58,29 @@ public class Command : ICommand
 
     //    return ((IConnectionDataBases)connection).Execute(this);
     //}
+
+    protected static IEnumerable<PropertyInfo> GetPropertyInfo(object entity)
+    {
+        return entity
+                .GetType()
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                .Where(w => Generic.IsTypeValid(w.PropertyType));
+    }
+    protected static string GetTableName(object entity)
+    {
+        return Generic.GetTableName(entity.GetType());
+    }
+    protected static Dictionary<string, string>  GetFields(object entity, IEnumerable<PropertyInfo> propertyInfos)
+    {
+        Dictionary<string, string> fields = [];
+        foreach (PropertyInfo property in propertyInfos)
+        {
+            bool autoIncrement = property.GetCustomAttribute<ColumnPrimarykeyAttribute>()?.AutoIncrement ?? false;
+            if (autoIncrement)
+                continue;
+
+            fields.Add(Generic.GetFieldName(property), Generic.GetValue(entity, property));
+        }
+        return fields;
+    }
 }

@@ -32,13 +32,15 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
+            ExecutarComandoInsert();
+
             //ExecutarComandoUpdate();
 
             //ExecutarComandoSelect();
 
             //ExecutarComandoDdl();
 
-            ExecutarComando();
+            //ExecutarComando();
         }
 
         private void ExecutarComando()
@@ -112,8 +114,10 @@ namespace Teste
             sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
             //sqlite.TestConnection();
 
-            //Update update = new Update();
-            //update.SetValues(new User());
+            Update update = new Update();
+            update.SetValues(new User());
+            update.SetCommand(sqlite);
+            var v = update.Query;
 
             int fk = 2;
             Expression<Func<User, bool>> expression = user => (1==1 && user.IdUser == 1 && (user.FkAddress == fk || user.Email.Contains("fdsfsd"))); 
@@ -130,10 +134,15 @@ namespace Teste
         {
             sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
             //sqlite.TestConnection();
-
+            Insert insert = new Insert();
+            insert.SetValues(new User());
+            insert.SetCommand(sqlite);
+            var v1 = insert.Query;
+            var v = sqlite.GetCommandInsert(insert);
 
             //System.Diagnostics.Debug.WriteLine(table.ToString());
         }
+
         private void ExecutarComandoSelect()
         {
             sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");

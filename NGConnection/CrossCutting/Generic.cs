@@ -6,17 +6,6 @@ namespace NGConnection.CrossCutting
 {
     internal class Generic
     {
-        internal static IEnumerable<PropertyInfo> GetPropertyInfo(object entity)
-        {
-            return entity
-                    .GetType()
-                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                    .Where(w => IsTypeValid(w.PropertyType));
-        }
-        internal static string GetTableName(object entity)
-        {
-            return GetTableName(entity.GetType());
-        }
         internal static string GetTableName(Type entity)
         {
             return ((entity.GetCustomAttribute<TablePropertiesAttribute>()?.Name?.Trim() ?? "") != "") ?
@@ -25,52 +14,20 @@ namespace NGConnection.CrossCutting
         }
         internal static string GetFieldName(PropertyInfo propertyInfo)
         {
-            return ((propertyInfo.GetCustomAttribute<ColumnPropertiesAttribute>()?.Name?.Trim() ?? "") != "") ?
-                    propertyInfo.GetCustomAttribute<ColumnPropertiesAttribute>().Name :
-                    propertyInfo.Name;
+            string fieldName = propertyInfo.GetCustomAttribute<ColumnPropertiesAttribute>()?.Name?.Trim() ?? "";
+            if (fieldName == "")
+                fieldName = propertyInfo.Name;
+
+            return fieldName;
         }
-        internal static string[] GetFieldsName(IEnumerable<PropertyInfo> propertyInfos)
+        internal static string GetValue(object entity, PropertyInfo propertyInfo)
         {
-            return
-                propertyInfos
-                    .Select(GetFieldName)
-                    .ToArray();
-        }
-        internal static string[] GetValues(object entity, IEnumerable<PropertyInfo> propertyInfos)
-        {
-            return
-                propertyInfos
-                    .Select(s => GetValue(entity, s))
-                    .ToArray();
-        }
-        internal static string GetValue(object entity, PropertyInfo propertyInfos)
-        {
-            var typeCode = Type.GetTypeCode(GetNullableType(propertyInfos.PropertyType));
-            object value = propertyInfos.GetValue(entity);
+            var typeCode = Type.GetTypeCode(GetNullableType(propertyInfo.PropertyType));
+            object value = propertyInfo.GetValue(entity);
             return GetValueFormated(typeCode, value);
         }
-        internal static string GetValue(FieldInfo fieldInfo, MemberExpression expression)
-        {
-            var typeCode = Type.GetTypeCode(GetNullableType(fieldInfo.FieldType));
-            object value = Expression.Lambda(expression.Expression).Compile().DynamicInvoke();
-            value = fieldInfo.GetValue(value);
 
-            return GetValueFormated(typeCode, value);
-        }
-        internal static string GetValue(MethodCallExpression expression)
-        {
-            object instance = Expression.Lambda(expression.Object).Compile().DynamicInvoke();
-
-            object[] args =
-                expression.Arguments
-                    .Select(arg => Expression.Lambda(arg).Compile().DynamicInvoke())
-                    .ToArray();
-
-            object value = expression.Method.Invoke(instance, args);
-            return GetValueFormated(Type.GetTypeCode(GetNullableType(value.GetType())), value);
-        }
-
-        private static string GetValueFormated(TypeCode typeCode, object value)
+        internal static string GetValueFormated(TypeCode typeCode, object value)
         {
             if (value == null)
                 return "NULL";
@@ -95,7 +52,7 @@ namespace NGConnection.CrossCutting
                 _ => value.ToString(),
             };
         } 
-        private static Type GetNullableType(Type typeToCheck)
+        internal static Type GetNullableType(Type typeToCheck)
         {
             if (typeToCheck.IsGenericType &&
                 typeToCheck.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -107,7 +64,7 @@ namespace NGConnection.CrossCutting
                 return typeToCheck;
             }
         }
-        private static bool IsTypeValid(Type typeToCheck)
+        internal static bool IsTypeValid(Type typeToCheck)
         {
             var typeCode = Type.GetTypeCode(GetNullableType(typeToCheck));
 

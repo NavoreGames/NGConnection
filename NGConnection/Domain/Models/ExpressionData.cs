@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using NGConnection.Attributes;
 using NGConnection.CrossCutting;
-using Google.Protobuf.WellKnownTypes;
 
 namespace NGConnection.Models;
 
@@ -117,7 +116,7 @@ public class ExpressionData
     {
         if (expression.Member is FieldInfo fieldInfo)
         {
-            Query += Generic.GetValue(fieldInfo, expression);
+            Query += GetValue(fieldInfo, expression);
         }
         if (expression.Member is PropertyInfo propertyInfo)
         {
@@ -134,7 +133,7 @@ public class ExpressionData
 
         if (expression.Object is ConstantExpression)
         {
-            Query += Generic.GetValue(expression);
+            Query += GetValue(expression);
         }
         else if (expression.Object is MemberExpression)
         {
@@ -174,5 +173,26 @@ public class ExpressionData
         else if (open == false && expressionType is (ExpressionType.And or ExpressionType.AndAlso or
                                                 ExpressionType.Or or ExpressionType.OrElse))
             Query += ")";
+    }
+
+    private static string GetValue(MethodCallExpression expression)
+    {
+        object instance = Expression.Lambda(expression.Object).Compile().DynamicInvoke();
+
+        object[] args =
+            expression.Arguments
+                .Select(arg => Expression.Lambda(arg).Compile().DynamicInvoke())
+                .ToArray();
+
+        object value = expression.Method.Invoke(instance, args);
+        return Generic.GetValueFormated(Type.GetTypeCode(Generic.GetNullableType(value.GetType())), value);
+    }
+    private static string GetValue(FieldInfo fieldInfo, MemberExpression expression)
+    {
+        var typeCode = Type.GetTypeCode(Generic.GetNullableType(fieldInfo.FieldType));
+        object value = Expression.Lambda(expression.Expression).Compile().DynamicInvoke();
+        value = fieldInfo.GetValue(value);
+
+        return Generic.GetValueFormated(typeCode, value);
     }
 }

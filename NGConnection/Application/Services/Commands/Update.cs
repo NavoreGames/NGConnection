@@ -6,33 +6,30 @@ namespace NGConnection;
 
 public class Update : Command
 {
-    public string[] Fields { get; private set; }
-    public string[] Values { get; private set; }
+    public Dictionary<string, string> Fields { get; private set; }
     public Where Where { get; set; }
 
-    public Update(Guid identifier, string tableName, string[] fields, string[] values)
+    public Update(Guid identifier, string tableName, Dictionary<string, string> fields)
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Update;
         Name = tableName;
         Fields = fields;
-        Values = values;
         DataParameters = [];
         Where = new Where();
     }
-    public Update(string tableName, string[] fields, string[] values) :
-        this(Guid.NewGuid(), tableName, fields, values) { }
+    public Update(string tableName, Dictionary<string, string> fields) :
+        this(Guid.NewGuid(), tableName, fields) { }
     public Update(Guid identifier) :
-        this(identifier, "", [], []) { }
+        this(identifier, "", []) { }
     public Update() :
-        this(Guid.NewGuid(), "", [], []) { }
+        this(Guid.NewGuid(), "", []) { }
 
     public override void SetValues(object source)
     {
-        IEnumerable<PropertyInfo> propertyInfos = Generic.GetPropertyInfo(source);
-        Name = Generic.GetTableName(source);
-        Fields = Generic.GetFieldsName(propertyInfos);
-        Values = Generic.GetValues(source, propertyInfos);
+        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
+        Name = GetTableName(source);
+        Fields = GetFields(source, propertyInfos);
         Where.SetValues(source);
     }
     public override void SetCommand(IConnection connection)

@@ -1,9 +1,12 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿
 using Mysqlx.Prepare;
+using NGConnection.Attributes;
 using NGConnection.Domain.Models;
 using NGConnection.Interfaces;
 using NGConnection.Models;
 using System.Data;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
@@ -154,9 +157,9 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         StringBuilder stringBuilder = new();
         stringBuilder.AppendLine($"INSERT INTO {command.Name}");
-        stringBuilder.AppendLine($"({String.Join(',', command.Fields)})");
+        stringBuilder.AppendLine($"({String.Join(',', command.Fields.Keys)})");
         stringBuilder.AppendLine($"VALUES");
-        stringBuilder.AppendLine($"({String.Join(',', command.Values)})");
+        stringBuilder.AppendLine($"({String.Join(',', command.Fields.Values)})");
 
         return stringBuilder.ToString();
     }
@@ -164,7 +167,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         StringBuilder stringBuilder = new();
         stringBuilder.AppendLine($"UPDATE {command.Name} ");
-        stringBuilder.AppendLine($"SET {String.Join(',', command.Fields.Zip(command.Values, (fields, values) => $"{fields}={values}").ToArray())} ");
+        stringBuilder.AppendLine($"SET {String.Join(',', command.Fields.Keys.Zip(command.Fields.Values, (fields, values) => $"{fields}={values}").ToArray())} ");
 
         return stringBuilder.ToString();
     }
@@ -175,5 +178,5 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     public virtual string GetCommandWhere(Where command)
     {
         return $"WHERE {command.ExpressionData.GetQuery()}";
-    } 
+    }
 }

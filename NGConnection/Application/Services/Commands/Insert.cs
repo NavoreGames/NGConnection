@@ -7,31 +7,28 @@ namespace NGConnection;
 
 public class Insert : Command
 {
-    public string[] Fields { get; private set; }
-    public string[] Values { get; private set; }
+    public Dictionary<string, string> Fields { get; private set; }
 
-    public Insert(Guid identifier, string tableName, string[] fields, string[] values) 
+    public Insert(Guid identifier, string tableName, Dictionary<string, string> fields) 
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Insert;
         Name = tableName;
         Fields = fields;
-        Values = values;
         DataParameters = [];
     }
-    public Insert(string tableName, string[] fields, string[] values) :
-        this(Guid.NewGuid(), tableName, fields, values) { }
+    public Insert(string tableName, Dictionary<string, string> fields) :
+        this(Guid.NewGuid(), tableName, fields) { }
     public Insert(Guid identifier) :
-        this(identifier, "", [], []) { }
+        this(identifier, "", []) { }
     public Insert() :
-        this(Guid.NewGuid(), "", [], []) { }
+        this(Guid.NewGuid(), "", []) { }
 
     public override void SetValues(object source)
     {
-        IEnumerable<PropertyInfo> propertyInfos = Generic.GetPropertyInfo(source);
-        Name = Generic.GetTableName(source);
-        Fields = Generic.GetFieldsName(propertyInfos);
-        Values = Generic.GetValues(source, propertyInfos);  
+        IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
+        Name = GetTableName(source);
+        Fields = GetFields(source, propertyInfos);
     }
     public override void SetCommand(IConnection connection)
     {

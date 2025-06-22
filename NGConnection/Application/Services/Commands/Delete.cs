@@ -24,7 +24,7 @@ public class Delete : Command
 
     public override void SetValues(object source)
     {
-        Name = Generic.GetTableName(source);
+        Name = GetTableName(source);
         Where.SetValues(source);
     }
     public override void SetCommand(IConnection connection)

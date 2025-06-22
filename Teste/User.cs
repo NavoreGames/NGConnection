@@ -8,8 +8,9 @@ namespace NGEntity
 	public partial class User
 	{
         string lastNane;
+        [ColumnPrimarykey(true)]
 
-        public int? IdUser 
+        public int IdUser 
 		{ 
 			get; 
 			set; 
@@ -20,6 +21,5 @@ namespace NGEntity
         public int? FkAddress { get; set; }
 
 		public User() { }
-		public User(int? idUser) { IdUser = idUser; }
 	}
 }
