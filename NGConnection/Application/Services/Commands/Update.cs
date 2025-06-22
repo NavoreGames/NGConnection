@@ -25,6 +25,15 @@ public class Update : Command
     public Update() :
         this(Guid.NewGuid(), "", []) { }
 
+    public override ICommand Clone()
+    {
+        Update clone = (Update)base.Clone();
+        clone.Fields = Fields;
+        clone.Where = Where;
+
+        return clone;
+    }
+
     public override void SetValues(object source)
     {
         IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);

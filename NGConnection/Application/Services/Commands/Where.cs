@@ -21,6 +21,14 @@ public class Where : Command
             //string[] Values = GetValues(source, propertyInfos);
         }
     }
+    public override ICommand Clone()
+    {
+        Where clone = (Where)base.Clone();
+        clone.ExpressionData = ExpressionData;
+
+        return clone;
+    }
+
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)

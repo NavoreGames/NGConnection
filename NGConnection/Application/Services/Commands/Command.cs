@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using System.Xml.Serialization;
 using NGConnection.Attributes;
 using NGConnection.CrossCutting;
 using NGConnection.Interfaces;
@@ -48,6 +49,21 @@ public class Command : ICommand
     public Command() : this(Guid.NewGuid(), Enums.CommandType.None, "", []) { }
 
     public override string ToString() => Query;
+    public virtual ICommand Clone()
+    {
+        Command clone = new()
+        {
+            Identifier = this.Identifier,
+            CommandType = this.CommandType,
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Name = this.Name,
+            Alias = this.Alias
+        };
+
+        return clone;
+    }
+
 
     public virtual void SetValues(object source) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetValues");
     public virtual void SetCommand(IConnection connection) => throw new NGException("", "Method not implemented in child class", GetType().FullName + "/SetCommand");

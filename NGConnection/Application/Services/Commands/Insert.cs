@@ -24,6 +24,14 @@ public class Insert : Command
     public Insert() :
         this(Guid.NewGuid(), "", []) { }
 
+    public override ICommand Clone()
+    {
+        Insert clone = (Insert)base.Clone();
+        clone.Fields = Fields;
+        
+        return clone;
+    }
+
     public override void SetValues(object source)
     {
         IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);

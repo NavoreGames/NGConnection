@@ -121,6 +121,18 @@ public class Column : Command
     { }
     #endregion
 
+    public override ICommand Clone()
+    {
+        Column clone = (Column)base.Clone();
+        clone.Table = Table;
+        clone.Key = Key;
+        clone.Type = Type;
+        clone.Length = Length;
+        clone.NotNull = NotNull;
+        clone.Autoincrement = Autoincrement;
+
+        return clone;
+    }
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)

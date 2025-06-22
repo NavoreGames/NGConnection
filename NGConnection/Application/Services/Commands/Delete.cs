@@ -1,4 +1,5 @@
-﻿using NGConnection.CrossCutting;
+﻿using Google.Protobuf.WellKnownTypes;
+using NGConnection.CrossCutting;
 using NGConnection.Enums;
 
 namespace NGConnection;
@@ -21,6 +22,14 @@ public class Delete : Command
         this(identifier, "") { }
     public Delete() :
         this(Guid.NewGuid(), "") { }
+
+    public override ICommand Clone()
+    {
+        Delete clone = (Delete)base.Clone();
+        clone.Where = Where;
+
+        return clone;
+    }
 
     public override void SetValues(object source)
     {

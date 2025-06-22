@@ -20,6 +20,13 @@ public class Table : Command
     public Table(Enums.CommandType commandType, DataBase dataBase, string name) :
         this(Guid.NewGuid(), commandType, dataBase, name, "") { }
 
+    public override ICommand Clone()
+    {
+        Table clone = (Table)base.Clone();
+        clone.DataBase = this.DataBase;
+
+        return clone;
+    }
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)

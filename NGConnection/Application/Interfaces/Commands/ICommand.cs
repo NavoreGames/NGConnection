@@ -12,4 +12,5 @@ public interface ICommand
    string Alias { get; }
 
     void SetCommand(IConnection connection);
+    ICommand Clone();
 }
