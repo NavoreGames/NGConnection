@@ -22,10 +22,16 @@ public class Table : Command
 
     public override ICommand Clone()
     {
-        Table clone = (Table)base.Clone();
-        clone.DataBase = this.DataBase;
-
-        return clone;
+        return new Table(
+            this.Identifier,
+            this.CommandType,
+            this.DataBase,
+            this.Name,
+            this.Alias)
+        {
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+        };
     }
     public override void SetCommand(IConnection connection)
     {

@@ -1,9 +1,6 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using System.Xml.Serialization;
+﻿using System.Reflection;
 using NGConnection.Attributes;
 using NGConnection.CrossCutting;
-using NGConnection.Interfaces;
 using NGConnection.Models;
 
 namespace NGConnection;
@@ -51,7 +48,7 @@ public class Command : ICommand
     public override string ToString() => Query;
     public virtual ICommand Clone()
     {
-        Command clone = new()
+        return new Command()
         {
             Identifier = this.Identifier,
             CommandType = this.CommandType,
@@ -60,8 +57,6 @@ public class Command : ICommand
             Name = this.Name,
             Alias = this.Alias
         };
-
-        return clone;
     }
 
 

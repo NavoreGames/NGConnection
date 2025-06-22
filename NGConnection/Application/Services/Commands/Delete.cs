@@ -25,10 +25,16 @@ public class Delete : Command
 
     public override ICommand Clone()
     {
-        Delete clone = (Delete)base.Clone();
-        clone.Where = Where;
-
-        return clone;
+        return new Delete()
+        {
+            Identifier = this.Identifier,
+            CommandType = this.CommandType,
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Name = this.Name,
+            Alias = this.Alias,
+            Where = this.Where
+        };
     }
 
     public override void SetValues(object source)

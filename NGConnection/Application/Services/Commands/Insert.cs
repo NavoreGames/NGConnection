@@ -1,6 +1,4 @@
-﻿using NGConnection.Attributes;
-using NGConnection.CrossCutting;
-using NGConnection.Enums;
+﻿using NGConnection.Enums;
 using System.Reflection;
 
 namespace NGConnection;
@@ -26,10 +24,16 @@ public class Insert : Command
 
     public override ICommand Clone()
     {
-        Insert clone = (Insert)base.Clone();
-        clone.Fields = Fields;
-        
-        return clone;
+        return new Insert()
+        {
+            Identifier = this.Identifier,
+            CommandType = this.CommandType,
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Name = this.Name,
+            Alias = this.Alias,
+            Fields = this.Fields
+        };
     }
 
     public override void SetValues(object source)

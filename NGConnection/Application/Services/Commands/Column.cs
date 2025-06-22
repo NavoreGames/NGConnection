@@ -1,6 +1,4 @@
 ﻿using NGConnection.Enums;
-using NGConnection.Exceptions;
-using NGConnection.Interfaces;
 
 namespace NGConnection;
 
@@ -123,15 +121,21 @@ public class Column : Command
 
     public override ICommand Clone()
     {
-        Column clone = (Column)base.Clone();
-        clone.Table = Table;
-        clone.Key = Key;
-        clone.Type = Type;
-        clone.Length = Length;
-        clone.NotNull = NotNull;
-        clone.Autoincrement = Autoincrement;
-
-        return clone;
+        return new Column(
+           this.Identifier,
+           this.CommandType,
+           this.Table,
+           this.Name,
+           this.Alias,
+           this.Key,
+           this.Type,
+           this.Length,
+           this.NotNull,
+           this.Autoincrement)
+        {
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+        };
     }
     public override void SetCommand(IConnection connection)
     {

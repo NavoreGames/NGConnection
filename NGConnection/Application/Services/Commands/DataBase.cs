@@ -12,6 +12,18 @@ public class DataBase : Command
     public DataBase(Enums.CommandType commandType, string name) :
         this(Guid.NewGuid(), commandType, name) { }
 
+    public override ICommand Clone()
+    {
+        return new DataBase(
+            this.Identifier,
+            this.CommandType,
+            this.Name)
+        {
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Alias = this.Alias
+        };
+    }
     public override void SetCommand(IConnection connection)
     {
         if (connection is not IConnectionDataBases)

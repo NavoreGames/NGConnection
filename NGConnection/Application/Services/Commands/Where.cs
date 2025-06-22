@@ -23,10 +23,16 @@ public class Where : Command
     }
     public override ICommand Clone()
     {
-        Where clone = (Where)base.Clone();
-        clone.ExpressionData = ExpressionData;
-
-        return clone;
+        return new Where()
+        {
+            Identifier = this.Identifier,
+            CommandType = this.CommandType,
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Name = this.Name,
+            Alias = this.Alias,
+            ExpressionData = this.ExpressionData
+        };
     }
 
     public override void SetCommand(IConnection connection)

@@ -1,5 +1,4 @@
-﻿using NGConnection.CrossCutting;
-using NGConnection.Enums;
+﻿using NGConnection.Enums;
 using System.Reflection;
 
 namespace NGConnection;
@@ -27,11 +26,17 @@ public class Update : Command
 
     public override ICommand Clone()
     {
-        Update clone = (Update)base.Clone();
-        clone.Fields = Fields;
-        clone.Where = Where;
-
-        return clone;
+        return new Update()
+        {
+            Identifier = this.Identifier,
+            CommandType = this.CommandType,
+            Query = this.Query,
+            DataParameters = this.DataParameters,
+            Name = this.Name,
+            Alias = this.Alias,
+            Fields = this.Fields,
+            Where = this.Where
+        };
     }
 
     public override void SetValues(object source)
