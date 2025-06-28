@@ -17,8 +17,9 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     protected IDbConnection dbConnection;
     protected IDbCommand dbCommand;
     protected IDbTransaction dbTransaction;
-    protected bool HasTransaction;
     protected IDataReader dataReader;
+
+    public bool hasTransaction;
 
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
@@ -43,7 +44,10 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     public bool TestConnection() => OpenConnection() | CloseConnection();
     public virtual bool OpenConnection()
     {
-        if(dbConnection.State != ConnectionState.Open)
+        if (dbConnection == null)
+            throw new NGException("", $"object dbConnectionction not instantiate", GetType().FullName + "/OpenConnection");
+
+        if (dbConnection.State != ConnectionState.Open)
             dbConnection.Open();
         if (dbConnection.State != ConnectionState.Open)
             throw new NGException("", $"Unable to open connection, connection is {dbConnection.State}", GetType().FullName + "/OpenConnection");
@@ -52,7 +56,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual bool CloseConnection()
     {
-        if (!HasTransaction)
+        if (!hasTransaction)
         {
             dbConnection?.Close();
             Dispose();
@@ -64,18 +68,18 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         OpenConnection();
         dbTransaction = dbConnection.BeginTransaction();
-        HasTransaction = true;
+        hasTransaction = true;
     }
     public virtual void CommitTransaction()
     {
         dbTransaction?.Commit();
-        HasTransaction = false;
+        hasTransaction = false;
         CloseConnection();
     }
     public virtual void RollbackTransaction()
     {
         dbTransaction?.Rollback();
-        HasTransaction = false;
+        hasTransaction = false;
         CloseConnection();
     }
 

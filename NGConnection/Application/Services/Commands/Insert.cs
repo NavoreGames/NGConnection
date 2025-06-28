@@ -7,6 +7,7 @@ public class Insert : Command
 {
     public Dictionary<string, string> Fields { get; private set; }
 
+
     public Insert(Guid identifier, string tableName, Dictionary<string, string> fields) 
     {
         Identifier = identifier;

@@ -32,11 +32,11 @@ namespace Teste
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            ExecutarComandoInsert();
+            //ExecutarComandoInsert();
 
             //ExecutarComandoUpdate();
 
-            //ExecutarComandoSelect();
+            ExecutarComandoSelect();
 
             //ExecutarComandoDdl();
 
@@ -145,14 +145,22 @@ namespace Teste
 
         private void ExecutarComandoSelect()
         {
-            sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
-            //sqlite.TestConnection();
+            try
+            {
 
+                sqlite = new Sqlite("C:\\Users\\willg\\Meu Drive", "DataBaseTeste", "u758086818_NGTroia", "#Navore2019");
+                //sqlite.TestConnection();
 
-            var v = sqlite.ExecuteReader("Select * from Teste where id = @id", [new("@id", 1, DbType.Int32)]);
+                var v = sqlite.ExecuteReader("Select * from Teste where id = @id", [new("@id", 1, DbType.Int32)]);
 
+                //System.Diagnostics.Debug.WriteLine(table.ToString());
 
-            //System.Diagnostics.Debug.WriteLine(table.ToString());
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
 
