@@ -6,6 +6,7 @@ namespace NGConnection.Interfaces;
 
 public interface IConnectionDataBases : IConnection
 {
+    bool HasTransaction { get; }
     bool TestConnection();
     bool OpenConnection();
     bool CloseConnection();

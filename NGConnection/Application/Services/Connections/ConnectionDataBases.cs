@@ -19,8 +19,6 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     protected IDbTransaction dbTransaction;
     protected IDataReader dataReader;
 
-    public bool hasTransaction;
-
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut, Dictionary<string, string> properties)
         : base(ipAddress, dataBaseName, userName, password, port, timeOut, properties) { }
     public ConnectionDataBases(string ipAddress, string dataBaseName, string userName, string password, int port, int timeOut)
@@ -31,6 +29,8 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
         : this(ipAddress, dataBaseName, userName, password, 0) { }
     public ConnectionDataBases(string connectionString)
         : base(connectionString) { }
+
+    public bool HasTransaction { get; private set; }
 
     public void Dispose()
     {
@@ -56,7 +56,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     }
     public virtual bool CloseConnection()
     {
-        if (!hasTransaction)
+        if (!HasTransaction)
         {
             dbConnection?.Close();
             Dispose();
@@ -68,18 +68,18 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
     {
         OpenConnection();
         dbTransaction = dbConnection.BeginTransaction();
-        hasTransaction = true;
+        HasTransaction = true;
     }
     public virtual void CommitTransaction()
     {
         dbTransaction?.Commit();
-        hasTransaction = false;
+        HasTransaction = false;
         CloseConnection();
     }
     public virtual void RollbackTransaction()
     {
         dbTransaction?.Rollback();
-        hasTransaction = false;
+        HasTransaction = false;
         CloseConnection();
     }
 
