@@ -26,6 +26,7 @@ public class Command : ICommand
 {
     public Guid Identifier { get; protected set; }
     public Enums.CommandType CommandType { get; protected set; }
+    public List<Type> EntityType { get; protected set; }
     public string Query { get; set; }
     public List<ConnandParameter> DataParameters { get; set; }
     public string Name { get; protected set; }
@@ -35,6 +36,7 @@ public class Command : ICommand
     {
         Identifier = identifier;
         CommandType = commandType;
+        EntityType = [];
         Query = query;
         DataParameters = dataParameters;
     }

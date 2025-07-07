@@ -88,7 +88,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
         PrepareExecute(command, dataParameters);
         var observableDataReader = new ObservableDataReader(dbCommand.ExecuteReader());
 
-        observableDataReader.OnCompleted += OnDataDeaderIsCompleted;
+        observableDataReader.OnCompleted += OnDataReaderIsCompleted;
 
         dataReader = observableDataReader;
 
@@ -134,7 +134,7 @@ public abstract class ConnectionDataBases : Connection, IConnectionDataBases
                 }
             );
     }
-    private void OnDataDeaderIsCompleted() =>
+    private void OnDataReaderIsCompleted() =>
         CloseConnection();
 
     public virtual string GetCommandCreateDataBase(DataBase command) =>
