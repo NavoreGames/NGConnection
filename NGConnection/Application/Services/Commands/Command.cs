@@ -36,6 +36,7 @@ public class Command : ICommand
     {
         Identifier = identifier;
         CommandType = commandType;
+        EntityType = null;
         Query = query;
         DataParameters = dataParameters;
     }

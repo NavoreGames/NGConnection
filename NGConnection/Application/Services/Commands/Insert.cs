@@ -1,4 +1,5 @@
-﻿using NGConnection.Enums;
+﻿using Mysqlx.Expr;
+using NGConnection.Enums;
 using System.Reflection;
 
 namespace NGConnection;
@@ -7,21 +8,28 @@ public class Insert : Command
 {
     public Dictionary<string, string> Fields { get; private set; }
 
-
-    public Insert(Guid identifier, string tableName, Dictionary<string, string> fields) 
+    public Insert(Guid identifier, object entity)
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Insert;
-        Name = tableName;
-        Fields = fields;
+        EntityType = entity.GetType();
+        Name = "";
+        Fields = [];
         DataParameters = [];
+
+        if (entity != null)
+            SetValues(entity);
     }
-    public Insert(string tableName, Dictionary<string, string> fields) :
-        this(Guid.NewGuid(), tableName, fields) { }
+   
     public Insert(Guid identifier) :
-        this(identifier, "", []) { }
+         this(identifier, null)
+    { }
+    public Insert(object entity) :
+       this(Guid.NewGuid(), entity)
+    { }
     public Insert() :
-        this(Guid.NewGuid(), "", []) { }
+        this(Guid.NewGuid(), null)
+    { }
 
     public override ICommand Clone()
     {
@@ -40,6 +48,7 @@ public class Insert : Command
     public override void SetValues(object source)
     {
         IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
+        EntityType = source.GetType();
         Name = GetTableName(source);
         Fields = GetFields(source, propertyInfos);
     }
