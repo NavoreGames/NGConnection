@@ -12,7 +12,7 @@ public class Insert : Command
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Insert;
-        EntityType = entity.GetType();
+        EntityType = entity?.GetType();
         Name = "";
         Fields = [];
         DataParameters = [];
@@ -37,6 +37,7 @@ public class Insert : Command
         {
             Identifier = this.Identifier,
             CommandType = this.CommandType,
+            EntityType = this.EntityType,   
             Query = this.Query,
             DataParameters = this.DataParameters,
             Name = this.Name,
