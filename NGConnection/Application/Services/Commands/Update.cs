@@ -8,21 +8,24 @@ public class Update : Command
     public Dictionary<string, string> Fields { get; private set; }
     public Where Where { get; set; }
 
-    public Update(Guid identifier, string tableName, Dictionary<string, string> fields)
+    public Update(Guid identifier, object entity)
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Update;
-        Name = tableName;
-        Fields = fields;
+        Fields = [];
         DataParameters = [];
         Where = new Where();
+
+        if (entity != null)
+            SetValues(entity);
     }
-    public Update(string tableName, Dictionary<string, string> fields) :
-        this(Guid.NewGuid(), tableName, fields) { }
     public Update(Guid identifier) :
-        this(identifier, "", []) { }
+        this(identifier, "") { }
+    public Update(object entity) :
+       this(Guid.NewGuid(), entity)
+    { }
     public Update() :
-        this(Guid.NewGuid(), "", []) { }
+        this(Guid.NewGuid(), "") { }
 
     public override ICommand Clone()
     {
@@ -30,6 +33,7 @@ public class Update : Command
         {
             Identifier = this.Identifier,
             CommandType = this.CommandType,
+            EntityType = this.EntityType,
             Query = this.Query,
             DataParameters = this.DataParameters,
             Name = this.Name,
@@ -42,6 +46,7 @@ public class Update : Command
     public override void SetValues(object source)
     {
         IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
+        EntityType = source.GetType();
         Name = GetTableName(source);
         Fields = GetFields(source, propertyInfos);
         Where.SetValues(source);

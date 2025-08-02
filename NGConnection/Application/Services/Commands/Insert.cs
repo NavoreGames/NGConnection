@@ -12,8 +12,6 @@ public class Insert : Command
     {
         Identifier = identifier;
         CommandType = DmlCommandType.Insert;
-        EntityType = entity?.GetType();
-        Name = "";
         Fields = [];
         DataParameters = [];
 
