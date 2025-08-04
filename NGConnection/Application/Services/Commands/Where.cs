@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using NGConnection.Models;
 
 namespace NGConnection;
 
 public class Where : Command
 {
-    //public ExpressionData Expression { get; set; }
+    public Dictionary<string, string> Fields { get; private set; }
     public ExpressionData ExpressionData { get; set; }
 
     public Where() { ExpressionData = new(); }
@@ -15,10 +16,10 @@ public class Where : Command
             ExpressionData = new(expression);
         else
         {
+            IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
+            Fields = GetPrimaryFields(source, propertyInfos);
             ExpressionData = new();
-            //IEnumerable<PropertyInfo> propertyInfos = GetPropertyInfo(source);
-            //string[] Fields = GetFields(propertyInfos);
-            //string[] Values = GetValues(source, propertyInfos);
+            ExpressionData.SetQuery(Fields);
         }
     }
     public override ICommand Clone()

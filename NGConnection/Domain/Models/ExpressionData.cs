@@ -20,7 +20,10 @@ public class ExpressionData
 
         return Query;
     }
-
+    public void SetQuery(Dictionary<string, string> fields)
+    {
+        Query = String.Join(" AND ", fields.Keys.Zip(fields.Values, (fields, values) => $"{fields}={values}").ToArray());
+    }
     private void SetExpression(Expression expression)
     {
         if (expression is LambdaExpression lambdaExpression)

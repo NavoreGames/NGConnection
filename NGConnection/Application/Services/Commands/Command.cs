@@ -96,4 +96,13 @@ public class Command : ICommand
         }
         return fields;
     }
+    protected static Dictionary<string, string> GetPrimaryFields(object entity, IEnumerable<PropertyInfo> propertyInfos)
+    {
+        Dictionary<string, string> fields = [];
+        foreach (PropertyInfo property in propertyInfos.Where(w=> w.GetCustomAttribute<ColumnPrimarykeyAttribute>() != null))
+        {
+            fields.Add(Generic.GetFieldName(property), Generic.GetValue(entity, property));
+        }
+        return fields;
+    }
 }
