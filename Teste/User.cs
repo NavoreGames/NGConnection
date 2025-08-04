@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using NGConnection.Attributes;
-using NGConnection.Enums;
+﻿using NGConnection.Attributes;
 
 namespace NGEntity
 {
@@ -19,7 +17,9 @@ namespace NGEntity
 		public string Name { get; set; }
 		public bool Flag { get; set; }
         public int? FkAddress { get; set; }
+        public Address Address { get; set; }
 
-		public User() { }
+
+        public User() { }
 	}
 }

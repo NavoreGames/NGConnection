@@ -20,12 +20,12 @@ public class Update : Command
             SetValues(entity);
     }
     public Update(Guid identifier) :
-        this(identifier, "") { }
+        this(identifier, null) { }
     public Update(object entity) :
        this(Guid.NewGuid(), entity)
     { }
     public Update() :
-        this(Guid.NewGuid(), "") { }
+        this(Guid.NewGuid(), null) { }
 
     public override ICommand Clone()
     {

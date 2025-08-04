@@ -34,9 +34,9 @@ namespace Teste
         {
             //ExecutarComandoInsert();
 
-            //ExecutarComandoUpdate();
+            ExecutarComandoUpdate();
 
-            ExecutarComandoSelect();
+            //ExecutarComandoSelect();
 
             //ExecutarComandoDdl();
 
