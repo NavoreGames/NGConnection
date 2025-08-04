@@ -10,13 +10,16 @@ public class Where : Command
     public Dictionary<string, string> Fields { get; private set; }
     public ExpressionData ExpressionData { get; set; }
 
-    public Where(Guid identifier) 
+    public Where(Guid identifier, Expression expression) 
     { 
         Identifier = identifier;
         ExpressionData = new();
+
+        if(expression != null)
+            SetValues(expression);
     }
     public Where() :
-         this(Guid.NewGuid())
+         this(Guid.NewGuid(), null)
     { }
     public override void SetValues(object source)
     {
