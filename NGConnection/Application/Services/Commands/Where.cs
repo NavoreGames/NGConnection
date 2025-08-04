@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Mysqlx.Expr;
 using NGConnection.Models;
 
 namespace NGConnection;
@@ -9,7 +10,14 @@ public class Where : Command
     public Dictionary<string, string> Fields { get; private set; }
     public ExpressionData ExpressionData { get; set; }
 
-    public Where() { ExpressionData = new(); }
+    public Where(Guid identifier) 
+    { 
+        Identifier = identifier;
+        ExpressionData = new();
+    }
+    public Where() :
+         this(Guid.NewGuid())
+    { }
     public override void SetValues(object source)
     {
         if (source is Expression expression)
